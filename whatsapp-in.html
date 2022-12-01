@@ -1,0 +1,31 @@
+<script type="text/javascript">
+    RED.nodes.registerType('whatsapp-in',{
+        category: 'whatsapp',
+        color: '#25D366',
+        defaults: {
+            name: {value:"Chats In"},
+            whatsappLink: {value:"whatsapp-web", type:'whatsappLink'}        
+        },
+        outputs:1,
+        icon: 'font-awesome/fa-commenting',
+        label: function() {
+            return this.name||"Whatsapp In";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="whatsapp-in">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-whatsappLink"><i class="fa fa-tag"></i> Client</label>
+        <input type="text" id="node-input-whatsappLink" placeholder="Name">
+    </div>
+</script>
+  
+   
+<script type="text/html" data-help-name="whatsapp-in">
+    <p>A simple node to recive whatsapp messages.</p>
+</script>

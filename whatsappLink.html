@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    RED.nodes.registerType('whatsappLink',{
+        category: 'config',
+        defaults: {
+            cName : {value:"whatsapp-web",required:true}
+        },
+        label: function() {
+            return this.cName ;
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="whatsappLink">
+    <div class="form-row">
+        <label for="node-config-input-cNAme"><i class="fa fa-bookmark"></i> Host</label>
+        <input type="text" id="node-config-input-cName">
+    </div>
+    <div class="form-row">
+        <label> Don't put space in Name. </label>
+    </div>
+</script>

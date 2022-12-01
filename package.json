@@ -1,0 +1,35 @@
+{
+  "name": "whatsapp-bot",
+  "version": "0.1.1",
+  "description": "Whatsapp connection with Node-Red",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raweee/whatsapp-bot.git"
+  },
+  "keywords": [
+    "node-red",
+    "whatsapp",
+    "message"
+  ],
+  "author": "Ravi Mishra",
+  "license": "ISC",
+  "node-red": {
+    "nodes": {
+      "whatsapp admin": "whatsappAdmin.js",
+      "whatsapp in": "whatsapp-in.js",
+      "whatsapp Out": "whatsapp-out.js",
+      "whatsapp Link": "whatsappLink.js"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/raweee/whatsapp-bot/issues"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.1",
+    "whatsapp-web.js": "^1.18.4"
+  }
+}

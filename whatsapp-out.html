@@ -1,0 +1,38 @@
+<script type="text/javascript">
+    RED.nodes.registerType('whatsapp-out',{
+        category: 'whatsapp',
+        color: '#25D366',
+        defaults: {
+            name: {value:"Message Out"},
+            whatsappLink: {value:"whatsapp-web", type:'whatsappLink'},
+            number: {value: ""}        
+        },
+        outputs:0,
+        inputs:1,
+        icon: 'font-awesome/fa-commenting',
+        align: 'right',
+        label: function() {
+            return this.name||"Whatsapp Out";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="whatsapp-out">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-whatsappLink"><i class="fa fa-tag"></i> Client</label>
+        <input type="text" id="node-input-whatsappLink" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-number"><i class="fa fa-tag"></i> Number</label>
+        <input type="text" id="node-input-number" placeholder="Mobile Number..">
+    </div>
+</script>
+  
+   
+<script type="text/html" data-help-name="whatsapp-out">
+    <p>A simple node to recive whatsapp messages.</p>
+</script>

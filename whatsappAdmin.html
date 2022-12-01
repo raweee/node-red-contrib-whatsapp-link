@@ -1,0 +1,32 @@
+<script type="text/javascript">
+    RED.nodes.registerType('whatsapp-admin',{
+        category: 'whatsapp',
+        color: '#25D366',
+        defaults: {
+            name: {value:"whatsapp-admin"},
+            whatsappLink: {value:"", type: "whatsappLink"}
+        },
+        outputs:1,
+        inputs:1,
+        icon: 'font-awesome/fa-comments',
+        label: function() {
+            return this.name||"Whatsapp Admin";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="whatsapp-admin">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-whatsappLink"><i class="fa fa-tag"></i> Client</label>
+        <input type="text" id="node-input-whatsappLink" placeholder="Name">
+    </div>
+</script>
+  
+   
+<script type="text/html" data-help-name="whatsapp-admin">
+    <p>A simple node that create Whatsapp clinet and generate QR code to connect with WhatsApp.</p>
+</script>
