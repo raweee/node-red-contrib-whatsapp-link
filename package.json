@@ -8,7 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/raweee/whatsapp-bot.git"
+    "url": "git+https://github.com/raweee/node-red-contrib-whatsapp-link.git"
+  },
+  "bugs": {
+    "url": "https://github.com/raweee/node-red-contrib-whatsapp-link/issues"
   },
   "keywords": [
     "node-red",
@@ -24,9 +27,6 @@
       "whatsapp Out": "whatsapp-out.js",
       "whatsapp Link": "whatsappLink.js"
     }
-  },
-  "bugs": {
-    "url": "https://github.com/raweee/whatsapp-bot/issues"
   },
   "dependencies": {
     "qrcode": "^1.5.1",
