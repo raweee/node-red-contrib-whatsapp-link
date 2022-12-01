@@ -20,6 +20,7 @@
   "author": "Ravi Mishra",
   "license": "ISC",
   "node-red": {
+    "version": ">=2.0",
     "nodes": {
       "whatsapp admin": "whatsappAdmin.js",
       "whatsapp in": "whatsapp-in.js",
@@ -30,5 +31,8 @@
   "dependencies": {
     "qrcode": "^1.5.1",
     "whatsapp-web.js": "^1.18.4"
+  },
+  "engines": {
+    "node" : ">=8.0.0"
   }
 }
