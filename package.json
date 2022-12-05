@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-whatsapp-link",
-  "version": "0.1.1",
+  "version": "0.1.12",
   "description": "Whatsapp connection with Node-Red",
     "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

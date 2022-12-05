@@ -17,21 +17,18 @@ module.exports = function(RED) {
                 
          // Commands recived for Whatsapp Client.
 
-        this.on('input', function(msg, send){
+        this.on('input', async function(msg, send){
             if (msg.payload === "destroy") {
-                node.waClient.destroy();
+                await node.waClient.destroy();
                 SetStatus("Disconnected","red");
             } 
             else if (msg.payload==="logout") {
-                node.waClient.logout();
-                SetStatus("Logged Out..","red");
+                await node.waClient.logout();
+                SetStatus("Logged Out","red");
             }
-            else if (msg.payload === "test"){
-                async function test() {
-                   msg.payload = await node.waClient.getState();
-                   node.send(msg);
-                }
-                test();
+            else if (msg.payload === "state"){
+                msg.payload = await node.waClient.getState();
+                node.send(msg);
             }           
             else if (msg.payload === "restart"){
                 node.WARestart();
@@ -39,33 +36,33 @@ module.exports = function(RED) {
             };        
         });
 
-        this.on(`close`, ()=>{
-            SetStatus("Disconnected", "red");
-        });
-
-        //QR Code generation.
+        //whatsapp Status Parameters----
         node.waClient.on('qr', (qr) => {
-            QRCode.toString(qr, {type : 'terminal', small:true }, function(err, QRTerminal){
-                console.log("To Connect, Scan the QR Code through your Whatsapp Mobile App.")
-                console.log(QRTerminal);
-            });
             SetStatus("QR Code Generated", "yellow");
             QRCode.toDataURL(qr, function(err, url){
-                SetStatus("Scan QR in Terminal", "green");
                 msg = {payload : url};
                 node.send(msg);
             });
         });
         
-        SetStatus("Connecting...", "yellow");
+        node.waClient.on('auth_failure', () => {
+            SetStatus('Not Connected','red');
+        });
+                
+        node.waClient.on('loading_screen', () => {
+            SetStatus('Connecting...','yellow');
+        });
+        
         node.waClient.on('ready', () => {
-            console.log('Whatsapp Client is ready!');
             SetStatus('Connected','green');
         });
 
         node.waClient.on('disconnected', () => {
-            console.log('WA Client is Disconnected!');
-            SetStatus("Disconeccted","red");
+            SetStatus("Disconnected","red");
+        });
+
+        this.on(`close`, ()=>{
+            SetStatus("Disconnected", "red");
         });
     }
     RED.nodes.registerType("whatsapp-admin", WhatsappAdmin);
