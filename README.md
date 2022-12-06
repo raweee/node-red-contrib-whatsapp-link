@@ -44,8 +44,9 @@ Currently in developing mode, Continous updated may encounter.
     - Please look complete `{msg}` to get all details about recived message.
     
 
-3. **Whatsapp Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentiond in node.
-    > Don't forget to mention international dialing code befor your number. Number must be in format like `+11 99999 99999` without any space. 
+3. **Whatsapp Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
+
+     *Don't forget to mention international dialing code befor your number. Number must be in format like `+11 99999 99999` without any space.* 
 
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -
