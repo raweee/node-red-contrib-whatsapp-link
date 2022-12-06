@@ -17,13 +17,11 @@ Currently in developing mode, Continous updated may encounter.
 ## Nodes
 1. **Whatsapp Admin** : Node used for basic status of whatsapp.
 
-
-
     | Inputs | Description           |
     |--------|--------------         |
     | test   | Checks the current status of whatsapp and output the same in `msg.payload`|
     | destroy| Close the client and destroy the connection.|
-    | restart | restart the whatsapp client |
+    | restart | Restart the whatsapp client |
     | logout | Simply log you out and close the session. |
     
 
