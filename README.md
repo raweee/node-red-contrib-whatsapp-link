@@ -1,8 +1,8 @@
 # Whatsapp Link :iphone:
 
-Simple node for connecting Node-Red to Whatsapp.
+Simple node for connecting Node-Red to Whatsapp :iphone:
 
-Currently in developing mode, Continous updated may encounter.
+Currently in developing mode, Continous updated may encounter. :sweat_smile:
 
 ## To Connect with Whatsapp 
 1. Deploy any whatsapp node along with whatsappLink node.
@@ -38,8 +38,13 @@ Currently in developing mode, Continous updated may encounter.
 2. **Whatsapp In** : Node to recive all messages send to connected number.
     -  Simply deploy the node and wait for connected (green) status.
     -  After succesfully connection, Node is able to recive all messages.
-    - Messages can be read at `msg.payload` and `msg.body` and sender number can be read at `msg.from`.
+    - Messages can be read at `msg.payload` and `msg.body`.
+    - Sender number can be read at `msg.from`.
     - Please look complete `{msg}` to get all details about recived message.
+
+    | TEST |
+    | -----|
+    | Try to send `!nodered` to connected whatsapp number and get a `Hi` in reply from Node-Red.
 
 3. **Whatsapp Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
