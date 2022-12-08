@@ -15,8 +15,7 @@ module.exports = function(RED) {
             node.send(msg);    
         };
                 
-         // Commands recived for Whatsapp Client.
-
+        // Commands recived for Whatsapp Admin.
         this.on('input', async function(msg, send){
             if (msg.payload === "destroy") {
                 await node.waClient.destroy();
