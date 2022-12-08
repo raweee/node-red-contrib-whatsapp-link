@@ -36,8 +36,13 @@ module.exports = function(RED) {
         };
         WAConnect();
 
-        async function WAClose(){
-            await client.destroy();
+        function WAClose(){
+            try { 
+                client.destroy();
+            }
+            catch(e){
+                WAnode.err(`Error : Too many instructions! Try again.`)
+            }
         };
 
         async function connectionSetup(){
@@ -78,7 +83,6 @@ module.exports = function(RED) {
     
         this.WAConnect = WAConnect;
         this.client = client;
-
         this.WARestart = WARestart;
         this.whatsappConnectionStatus = whatsappConnectionStatus;
     }
