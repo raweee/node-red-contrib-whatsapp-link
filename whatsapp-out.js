@@ -3,7 +3,9 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
         var node = this;
         node.number = config.number;
-        node.number = this.number.includes('@c.us') ? this.number : `${this.number}@c.us`;
+        node.number = node.number.match(/\d+/);
+        //node.number = this.number.includes('@c.us') ? this.number : `${this.number}@c.us`;
+        node.number = `${node.number}@c.us`;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
 
