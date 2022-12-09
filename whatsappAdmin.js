@@ -35,6 +35,23 @@ module.exports = function(RED) {
             };        
         });
 
+        //Group Add/leave status-----
+        node.waClient.on('group_join', (msg)=>{
+            node.send(msg);
+            console.log(msg);
+            msg.reply('!Node-Red joined');
+        });
+
+        node.waClient.on('group_leave', (msg)=>{
+            node.send(msg);
+            msg.reply('!Node-Red  leave');
+        });
+
+        node.waClient.on('group_update', (msg)=>{
+            node.send(msg);
+        });
+
+        
         //whatsapp Status Parameters----
         node.waClient.on('qr', (qr) => {
             SetStatus("QR Code Generated", "yellow");

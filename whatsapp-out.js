@@ -31,11 +31,8 @@ module.exports = function(RED) {
             SetStatus('Not Connected','red');
         });
                 
-        node.waClient.on('loading_screen', (percentage, topic) => {
+        node.waClient.on('loading_screen', () => {
             SetStatus('Connecting...','yellow');
-            msg.payload = percentage;
-            msg.topic = topic;
-            node.send(msg);
         });
         
         node.waClient.on('ready', () => {

@@ -20,6 +20,7 @@ module.exports = function(RED) {
             }
             catch(e) {
                 WAnode.log(`Error : ${e}`);
+                WARestart();
             };
 
             client.on("qr", (qr)=>{

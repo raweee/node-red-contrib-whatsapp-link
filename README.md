@@ -21,8 +21,8 @@ Currently in developing mode, Continous updated may encounter. :sweat_smile:
     | Inputs | Description           |
     |--------|--------------         |
     | test   | Checks the current status of whatsapp and output the same in `msg.payload`|
-    | destroy| Close the client and destroy the connection.|
-    | restart | Restart the whatsapp client |
+    | destroy| Close the client and destroy the whatsapp connection.|
+    | restart | Restart the whatsapp connection. |
     | logout | Simply log you out and close the session. |
     ---
     
@@ -36,15 +36,14 @@ Currently in developing mode, Continous updated may encounter. :sweat_smile:
     
 
 2. **Whatsapp In** : Node to recive all messages send to connected number.
-    -  Simply deploy the node and wait for connected (green) status.
+    -  Simply deploy the node and wait for green (connected) status.
     -  After succesfully connection, Node is able to recive all messages.
     - Messages can be read at `msg.payload` and `msg.body`.
     - Sender number can be read at `msg.from`.
     - Please look complete `{msg}` to get all details about recived message.
 
-    | TEST |
-    | -----|
-    | Try to send `!nodered` to connected whatsapp number and get a `Hi` in reply from Node-Red.
+    
+*Try to send `!nodered` to connected whatsapp number and get a `Hi` in reply from Node-Red.*
 
 3. **Whatsapp Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
