@@ -43,8 +43,8 @@ Currently in developing mode, Continous updated may encounter. :sweat_smile:
     - Sender number can be read at `msg.from`.
     - Please look complete `{msg}` to get all details about recived message.
 
-    
-*Try to send a message `!nodered` to connected whatsapp number and get a `Hi` in reply from Node-Red.*
+ Test Mode of Whatsapp In Node :   
+*Connect Whatsapp IN Node and try to send a message `!nodered` to connected whatsapp number and get a `Hi` in reply from Node-Red.*
 
 3. **Whatsapp Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
