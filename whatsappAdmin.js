@@ -36,15 +36,21 @@ module.exports = function(RED) {
         });
 
         //Group Add/leave status-----
-        node.waClient.on('group_join', (msg)=>{
+        node.waClient.on('group_join', async (notification)=>{
+            msg.chat = await notification.getChat();
+            msg.payload = msg.chat.name;
+            msg.type = notification.type;
+            msg.notification = notification;
             node.send(msg);
-            console.log(msg);
-            msg.reply('!Node-Red joined');
+            notification.reply('!Node-Red joined');
         });
 
-        node.waClient.on('group_leave', (msg)=>{
+        node.waClient.on('group_leave', async (notification)=>{
+            msg.chat = await notification.getChat();
+            msg.payload = msg.chat.name;
+            msg.type = notification.type;
+            msg.notification = notification;
             node.send(msg);
-            msg.reply('!Node-Red  leave');
         });
 
         node.waClient.on('group_update', (msg)=>{

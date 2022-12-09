@@ -20,7 +20,7 @@ module.exports = function(RED) {
             }
             catch(e) {
                 WAnode.log(`Error : ${e}`);
-                WARestart();
+                WAnode.log(`Error : Unable to start Whatsapp. Try Again..`);
             };
 
             client.on("qr", (qr)=>{

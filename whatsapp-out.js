@@ -3,14 +3,19 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
         var node = this;
         node.number = config.number;
-        node.number = node.number.match(/\d+/);
+        node.number = node.number.replace(/\D/g, '');
         //node.number = this.number.includes('@c.us') ? this.number : `${this.number}@c.us`;
         node.number = `${node.number}@c.us`;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
 
         node.on('input', (message)=> {
-            node.waClient.sendMessage(this.number, message.payload);
+            try {
+                node.waClient.sendMessage(node.number, message.payload);
+            }
+            catch(e) {
+                node.log(`Error Sending Msg: ${e}`);
+            };
         });
 
 
