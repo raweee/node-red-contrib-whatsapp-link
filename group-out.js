@@ -3,17 +3,25 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
         var node = this;
         node.gID = config.gID;
-        node.gID = node.gID.replace(/\D/g, '');
-        node.gID = `${node.gID}@g.us`;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
 
         node.on('input', (message)=> {
-            try {
-                node.waClient.sendMessage(node.gID, message.payload);
+            if(node.gID){
+                try {
+                    node.gID = node.gID.replace(/\D/g, '');
+                    node.gID = `${node.gID}@g.us`;
+                    node.waClient.sendMessage(node.gID, message.payload);
+                }
+                catch(e) {
+                    node.log(`Error Sending Msg: ${e}`);
+                };
             }
-            catch(e) {
-                node.log(`Error Sending Msg: ${e}`);
+            else {
+                SetStatus("No Chat-ID","red");
+                setTimeout(()=>{
+                    SetStatus('Connected','green');
+                }, 5000)
             };
         });
         function SetStatus(WAStatus, color){

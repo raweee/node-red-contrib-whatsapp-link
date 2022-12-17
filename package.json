@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-whatsapp-link",
-  "version": "0.1.24",
+  "version": "0.1.25",
   "description": "Whatsapp connection with Node-Red | No third party APIs",
   "repository": {
     "type": "git",
