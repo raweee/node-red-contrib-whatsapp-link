@@ -12,26 +12,23 @@ module.exports = function(RED) {
             node.status({fill:color,shape:"dot",text:WAStatus});   
         };
                
-        node.waClient.on('message', async msg => {
-            msg.payload = msg.body;
+        node.waClient.on('message', async message => {
+            let msg = {};
+            msg.payload = message.body;
+            msg.from = message.author || message.from ;
+            msg.chatID = message.from.replace(/\D/g, '');
+            msg.from = msg.from.replace(/\D/g, '');
+            msg.message = message ;
             node.send(msg);
-
-            // Whatsapp Chats testing text.
-            if(msg.body === '!nodered') {
-                var fromContact = msg.from.match(/\d+/);
-                msg.reply('Hi from Node-Red');
-                msg.payload = `!nodered recieved from ${fromContact}.`
-                node.send(msg);
-            }
         });
 
         //whatsapp Status Parameters----
         node.waClient.on('qr', (qr) => {
             SetStatus("QR Code Generated", "yellow");
-            QRCode.toDataURL(qr, function(err, url){
-                msg = {payload : url};
-                node.send(msg);
-            });
+            // QRCode.toDataURL(qr, function(err, url){
+            //     msg = {payload : url};
+            //     node.send(msg);
+            // });
         });
         
         node.waClient.on('auth_failure', () => {

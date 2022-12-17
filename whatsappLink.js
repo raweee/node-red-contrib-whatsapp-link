@@ -58,7 +58,7 @@ module.exports = function(RED) {
             }
             catch(e){
                 WAnode.log(`Error : ${e}`);
-                WARestart();
+                WAnode.log(`Error : Need to restart the Node.`);
             }
         };
         let connectionSetupID = setInterval(connectionSetup, 10000);  

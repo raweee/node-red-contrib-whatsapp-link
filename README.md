@@ -39,21 +39,36 @@ Currently in developing mode, Continous updated may encounter. :sweat_smile:
 2. **Whatsapp In** : Node to recive all messages send to connected number.
     -  Simply deploy the node and wait for green (connected) status.
     -  After succesfully connection, Node is able to recive all messages.
-    - Messages can be read at `msg.payload` and `msg.body`.
-    - Sender number can be read at `msg.from`.
-    - Please look complete `{msg}` to get all details about recived message.
 
- Test Mode of Whatsapp In Node :   
-*Connect Whatsapp IN Node and try to send a message `!nodered` to connected whatsapp number and get a `Hi` in reply from Node-Red.*
+    | Output | Description |
+    |--------|-------------|
+    | `msg.paylod` | Recived message |
+    | `msg.from`   | Sender Number |
+    | `msg.message` | Complete message object. <br />*Some extra details for advace users* |
+
 
 3. **Whatsapp Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
      *Don't forget to mention international dialing code befor your number. Number must be in format like `+11 99999 99999` without any space.* 
 
+4. **Group Message** : Whatsapp Group Node to send message in a Group.
+    
+    *Chat IDs are numbers given to each chats including group chats in whatsapp*
+
+For every message recived from Whatsapp-IN-Node, Chat ID can be seen at `msg.chatID`, Copy the Chat ID of a group chat and paste it in Group-Message-Node to send group message in whatsapp.
+
+
+## Issues & Updates
+---
+Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-contrib-whatsapp-link/issues)
+
+* `Ver-0.1.21` : Group Message Node added.
+* Working on QR Code to directlly avilable in run time on Whatsapp-Admin-Node.
+
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -
 
-1. Group Message Node.
+1. Group Message Node (Working).
 2. Chat Reply node.
 3. Instruction (smart) Reply Node.
 

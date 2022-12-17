@@ -39,6 +39,7 @@ module.exports = function(RED) {
         node.waClient.on('group_join', async (notification)=>{
             msg.chat = await notification.getChat();
             msg.payload = msg.chat.name;
+            msg.chatID = msg.chat.id.user || `No ID Avilable`;
             msg.type = notification.type;
             msg.notification = notification;
             node.send(msg);
