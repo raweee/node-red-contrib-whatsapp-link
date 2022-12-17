@@ -11,8 +11,7 @@ module.exports = function(RED) {
             authStrategy : new LocalAuth(),
             puppeteer : {headless : true }
         });
-        // WAnode.log(`Client is generated`);
-       
+        
         let WAConnect = function(){
             try {
                 client.initialize();

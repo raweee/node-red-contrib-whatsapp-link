@@ -1,10 +1,7 @@
 {
   "name": "node-red-contrib-whatsapp-link",
-  "version": "0.1.21",
+  "version": "0.1.23",
   "description": "Whatsapp connection with Node-Red | No third party APIs",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/raweee/node-red-contrib-whatsapp-link.git"
@@ -15,18 +12,20 @@
   "keywords": [
     "node-red",
     "whatsapp",
-    "message"
+    "message",
+    "whatsapp Group",
+    "whatsapp Chat"
   ],
   "author": "Ravi Mishra",
   "license": "ISC",
   "node-red": {
     "version": ">=2.0",
     "nodes": {
-      "whatsapp admin": "whatsappAdmin.js",
-      "whatsapp in": "whatsapp-in.js",
-      "whatsapp Out": "whatsapp-out.js",
-      "whatsapp Link": "whatsappLink.js",
-      "Group Out": "whatsapp-Gout.js"
+      "whatsapp admin": "admin.js",
+      "whatsapp chats-in": "chats-in.js",
+      "whatsapp chats-out": "chats-out.js",
+      "whatsapp group-out": "group-out.js",
+      "whatsapp Link": "whatsappLink.js"
     }
   },
   "dependencies": {

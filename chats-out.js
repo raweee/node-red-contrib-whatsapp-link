@@ -1,26 +1,26 @@
 module.exports = function(RED) {
-
-
-    function WhatsappIn(config) {
+    function WhatsappOut(config) {
         RED.nodes.createNode(this,config);
         var node = this;
+        node.number = config.number;
+        node.number = node.number.replace(/\D/g, '');
+        node.number = `${node.number}@c.us`;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
 
+        node.on('input', (message)=> {
+            try {
+                node.waClient.sendMessage(node.number, message.payload);
+            }
+            catch(e) {
+                node.log(`Error Sending Msg: ${e}`);
+            };
+        });
+
 
         function SetStatus(WAStatus, color){
-            node.status({fill:color,shape:"dot",text:WAStatus});   
+            node.status({fill:color,shape:"dot",text:WAStatus});
         };
-               
-        node.waClient.on('message', async message => {
-            let msg = {};
-            msg.payload = message.body;
-            msg.from = message.author || message.from ;
-            msg.chatID = message.from.replace(/\D/g, '');
-            msg.from = msg.from.replace(/\D/g, '');
-            msg.message = message ;
-            node.send(msg);
-        });
 
         //whatsapp Status Parameters----
         node.waClient.on('qr', (qr) => {
@@ -48,5 +48,5 @@ module.exports = function(RED) {
         });
 
     }
-    RED.nodes.registerType("whatsapp-in", WhatsappIn);
+    RED.nodes.registerType("chats-out", WhatsappOut);
 }

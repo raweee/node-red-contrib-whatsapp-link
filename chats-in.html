@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('whatsapp-in',{
+    RED.nodes.registerType('chats-in',{
         category: 'whatsapp',
         color: '#25D366',
         defaults: {
@@ -7,30 +7,38 @@
             whatsappLink: {value:"whatsapp-web", type:'whatsappLink'}        
         },
         outputs:1,
-        icon: 'font-awesome/fa-commenting',
+        icon: 'whatsappLink.svg',
         label: function() {
-            return this.name||"Whatsapp In";
+            return this.name||"Chats In";
         }
     });
 </script>
 
-<script type="text/html" data-template-name="whatsapp-in">
+<script type="text/html" data-template-name="chats-in">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-whatsappLink"><i class="fa fa-tag"></i> Client</label>
+        <label for="node-input-whatsappLink"><i class="fa fa-gear"></i> Client</label>
         <input type="text" id="node-input-whatsappLink" placeholder="Name">
+    </div>
+    <div class="form-tips">
+        <p>Node will recive all whatsapp (personal and group) messages.</p>
     </div>
 </script>
   
    
-<script type="text/markdown" data-help-name="whatsapp-in">
+<script type="text/markdown" data-help-name="chats-in">
 Node to recive all messages send to connected number.
 - Simply deploy the node and wait for connected (green) status.
 - After succesfully connection, Node is able to recive all messages.
-- Messages can be read at `msg.payload` and `msg.body` and sender number can be read at `msg.from`.
-- Please look complete `{msg}` to get all details about recived message.
+
+    | Output | Description |
+    |--------|-------------|
+    | `msg.paylod` | Recived message |
+    | `msg.from`   | Sender Number |
+    | `msg.chatID` | Chat ID of Group chat / Personal chat |
+    | `msg.message` | Complete message object. <br />*Some extra details for advance users* |
 
 </script>

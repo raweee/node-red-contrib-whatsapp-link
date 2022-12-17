@@ -1,24 +1,21 @@
 module.exports = function(RED) {
-    function WhatsappOut(config) {
+    function WhatsappGroupOut(config) {
         RED.nodes.createNode(this,config);
         var node = this;
-        node.number = config.number;
-        node.number = node.number.replace(/\D/g, '');
-        //node.number = this.number.includes('@c.us') ? this.number : `${this.number}@c.us`;
-        node.number = `${node.number}@c.us`;
+        node.gID = config.gID;
+        node.gID = node.gID.replace(/\D/g, '');
+        node.gID = `${node.gID}@g.us`;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
 
         node.on('input', (message)=> {
             try {
-                node.waClient.sendMessage(node.number, message.payload);
+                node.waClient.sendMessage(node.gID, message.payload);
             }
             catch(e) {
                 node.log(`Error Sending Msg: ${e}`);
             };
         });
-
-
         function SetStatus(WAStatus, color){
             node.status({fill:color,shape:"dot",text:WAStatus});
         };
@@ -26,10 +23,6 @@ module.exports = function(RED) {
         //whatsapp Status Parameters----
         node.waClient.on('qr', (qr) => {
             SetStatus("QR Code Generated", "yellow");
-            // QRCode.toDataURL(qr, function(err, url){
-            //     msg = {payload : url};
-            //     node.send(msg);
-            // });
         });
         
         node.waClient.on('auth_failure', () => {
@@ -49,5 +42,5 @@ module.exports = function(RED) {
         });
 
     }
-    RED.nodes.registerType("whatsapp-out", WhatsappOut);
+    RED.nodes.registerType("group-out", WhatsappGroupOut);
 }

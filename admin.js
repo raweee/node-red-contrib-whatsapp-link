@@ -88,5 +88,5 @@ module.exports = function(RED) {
             SetStatus("Disconnected", "red");
         });
     }
-    RED.nodes.registerType("whatsapp-admin", WhatsappAdmin);
+    RED.nodes.registerType("admin", WhatsappAdmin);
 }

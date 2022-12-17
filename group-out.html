@@ -1,0 +1,55 @@
+<script type="text/javascript">
+    RED.nodes.registerType('group-out',{
+        category: 'whatsapp',
+        color: '#25D366',
+        defaults: {
+            name: {value:"Group Message"},
+            whatsappLink: {value:"whatsapp-web", type:'whatsappLink'},
+            gID: {value: ""}        
+        },
+        outputs:0,
+        inputs:1,
+        icon: 'whatsappLink.svg',
+        align: 'right',
+        label: function() {
+            return this.name||"Whatsapp Group";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="group-out">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-whatsappLink"><i class="fa fa-gear"></i> Client</label>
+        <input type="text" id="node-input-whatsappLink" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-gID"><i class="fa fa-address-card-o"></i> Number</label>
+        <input type="text" id="node-input-gID" placeholder="Group Chat ID..">
+    </div>
+    <div class="form-tips">
+        <p>Group chat IDs are numbers given to each chats in whatsapp. <br>
+            - For every message recived from whatsapp-chats-in Node,
+              Chat ID may be read at <b>msg.chatID</b>.<br>
+             <b>Or</b><br>
+            - Chat ID of group can also be recive from whatsapp-admin Node,
+              whenever the new group joined, Admin Node will notifiy the same.
+        </p>
+    </div>
+</script>
+  
+   
+<script type="text/html" data-help-name="group-out">
+    <p>Whatsapp Group Node to send message in a Group.</p>
+    <br>
+    <p>Group chat IDs are numbers given to each chats in whatsapp. <br>
+        - For every message recived from whatsapp-chats-in Node,
+          Chat ID may be read at <b>msg.chatID</b>.<br>
+         <b>Or</b><br>
+        - Chat ID of group can also be recive from whatsapp-admin Node,
+          whenever the new group joined, Admin Node will notifiy the same.
+    </p>
+</script>

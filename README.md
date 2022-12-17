@@ -36,7 +36,7 @@ Currently in developing mode, Continous updated may encounter. :sweat_smile:
     | Group Joined or Removed | `msg.paylod` : Group Name. </br> `msg.type` : joined / Removed from group.</br> `msg.notification` : Complete notification. </br> `msg.chat` : Complete Group Details. 
     
 
-2. **Whatsapp In** : Node to recive all messages send to connected number.
+2. **Chats In** : Node to recive all messages send to connected number.
     -  Simply deploy the node and wait for green (connected) status.
     -  After succesfully connection, Node is able to recive all messages.
 
@@ -44,25 +44,25 @@ Currently in developing mode, Continous updated may encounter. :sweat_smile:
     |--------|-------------|
     | `msg.paylod` | Recived message |
     | `msg.from`   | Sender Number |
-    | `msg.message` | Complete message object. <br />*Some extra details for advace users* |
+    | `msg.chatID` | Chat ID of Group chat / Personal chat |
+    | `msg.message` | Complete message object. <br />*Some extra details for advance users* |
 
 
-3. **Whatsapp Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
+3. **Chats Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
      *Don't forget to mention international dialing code befor your number. Number must be in format like `+11 99999 99999` without any space.* 
 
 4. **Group Message** : Whatsapp Group Node to send message in a Group.
+
+    The node will send recived `msg.payload` to a group chat.
     
-    *Chat IDs are numbers given to each chats including group chats in whatsapp*
-
-For every message recived from Whatsapp-IN-Node, Chat ID can be seen at `msg.chatID`, Copy the Chat ID of a group chat and paste it in Group-Message-Node to send group message in whatsapp.
-
 
 ## Issues & Updates
----
+
 Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-contrib-whatsapp-link/issues)
 
 * `Ver-0.1.21` : Group Message Node added.
+* `Ver-0.1.23` : Nodes are formatted correctly and names are updated.
 * Working on QR Code to directlly avilable in run time on Whatsapp-Admin-Node.
 
 ## Future Nodes

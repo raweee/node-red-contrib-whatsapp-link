@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('whatsapp-admin',{
+    RED.nodes.registerType('admin',{
         category: 'whatsapp',
         color: '#25D366',
         defaults: {
@@ -8,26 +8,26 @@
         },
         outputs:1,
         inputs:1,
-        icon: 'font-awesome/fa-comments',
+        icon: 'whatsappLink.svg',
         label: function() {
-            return this.name||"Whatsapp Admin";
+            return this.name||"admin";
         }
     });
 </script>
 
-<script type="text/html" data-template-name="whatsapp-admin">
+<script type="text/html" data-template-name="admin">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-whatsappLink"><i class="fa fa-tag"></i> Client</label>
+        <label for="node-input-whatsappLink"><i class="fa fa-gear"></i> Client</label>
         <input type="text" id="node-input-whatsappLink" placeholder="Name">
     </div>
 </script>
   
    
-<script type="text/markdown" data-help-name="whatsapp-admin">
+<script type="text/markdown" data-help-name="admin">
 Node used for Admin related tasks of whatsapp.
 
 | Inputs | Description           |

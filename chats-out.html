@@ -1,44 +1,45 @@
 <script type="text/javascript">
-    RED.nodes.registerType('whatsapp-out',{
+    RED.nodes.registerType('chats-out',{
         category: 'whatsapp',
         color: '#25D366',
         defaults: {
-            name: {value:"Message Out"},
+            name: {value:"Chats Out"},
             whatsappLink: {value:"whatsapp-web", type:'whatsappLink'},
             number: {value: ""}        
         },
         outputs:0,
         inputs:1,
-        icon: 'font-awesome/fa-commenting',
+        icon: 'whatsappLink.svg',
         align: 'right',
         label: function() {
-            return this.name||"Whatsapp Out";
+            return this.name||"Chats Out";
         }
     });
 </script>
 
-<script type="text/html" data-template-name="whatsapp-out">
+<script type="text/html" data-template-name="chats-out">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-whatsappLink"><i class="fa fa-tag"></i> Client</label>
+        <label for="node-input-whatsappLink"><i class="fa fa-gear"></i> Client</label>
         <input type="text" id="node-input-whatsappLink" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-number"><i class="fa fa-tag"></i> Number</label>
+        <label for="node-input-number"><i class="fa fa-address-card-o"></i> Number</label>
         <input type="text" id="node-input-number" placeholder="Mobile Number..">
     </div>
     <div class="form-tips">
         <p>Don't forget to mention international dialing code befor your number.
-        Number must be in format like <b>+11 99999 99999</b> without any space</p>
+        Number must be in format like <b>+11 99999 99999</b> without any space.</p>
     </div>
 </script>
   
    
-<script type="text/markdown" data-help-name="whatsapp-out">
+<script type="text/markdown" data-help-name="chats-out">
 Node to send whatsapp messages.
+
 As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
 -*Don't forget to mention international dialing code befor your number. Number must be in format like `+11 99999 99999` without any space.* 
