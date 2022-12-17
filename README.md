@@ -3,6 +3,7 @@
 Simple node for connecting Node-Red to Whatsapp :iphone:
 
 Currently in developing mode, Continous updated may encounter. :sweat_smile:
+Missing Nodes ? : To avoid long names, Node names are updated. If some node are missing after update please re-configure the update node, it will not change again. 
 
 ## To Connect with Whatsapp 
 1. Deploy any whatsapp node along with whatsappLink node.
