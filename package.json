@@ -1,8 +1,8 @@
 {
   "name": "node-red-contrib-whatsapp-link",
-  "version": "0.1.19",
+  "version": "0.1.21",
   "description": "Whatsapp connection with Node-Red | No third party APIs",
-    "scripts": {
+  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,7 +25,8 @@
       "whatsapp admin": "whatsappAdmin.js",
       "whatsapp in": "whatsapp-in.js",
       "whatsapp Out": "whatsapp-out.js",
-      "whatsapp Link": "whatsappLink.js"
+      "whatsapp Link": "whatsappLink.js",
+      "Group Out": "whatsapp-Gout.js"
     }
   },
   "dependencies": {
@@ -33,6 +34,6 @@
     "whatsapp-web.js": "^1.18.4"
   },
   "engines": {
-    "node" : ">=8.0.0"
+    "node": ">=8.0.0"
   }
 }
