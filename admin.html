@@ -1,18 +1,58 @@
 <script type="text/javascript">
-    RED.nodes.registerType('admin',{
-        category: 'whatsapp',
-        color: '#25D366',
-        defaults: {
-            name: {value:"whatsapp-admin"},
-            whatsappLink: {value:"", type: "whatsappLink"}
-        },
-        outputs:1,
-        inputs:1,
-        icon: 'whatsappLink.svg',
-        label: function() {
-            return this.name||"admin";
-        }
-    });
+    (function () 
+    { 
+        let qrImageWidth = "300";
+        RED.nodes.registerType('admin',{
+            category: 'whatsapp',
+            color: '#25D366',
+            defaults: {
+                name: {value:"WA Admin"},
+                whatsappLink: {value:"", type: "whatsappLink"}
+            },
+            outputs:1,
+            inputs:1,
+            icon: 'whatsappLink.svg',
+            label: function() {
+                return this.name||"admin";
+            }
+        });
+
+        let removeQrCode = function(NodeID) {
+            let qrImageElement = document.getElementById("whatsappLink-QRcode-" + NodeID);
+            if(qrImageElement){
+                qrImageElement.remove();
+            }
+        };
+
+        var creatImageContainer = function(NodeID, qrImage) {
+            let img = document.getElementById("whatsappLink-QRcode-" + NodeID)
+            if (!img) {
+                const container = document.getElementById(NodeID)
+                if (!container) { return }
+                const img = document.createElementNS("http://www.w3.org/2000/svg", 'image')
+                img.setAttribute('id', "whatsappLink-QRcode-" + NodeID)
+                img.setAttribute('x', '0')
+                img.setAttribute('y', '45')
+                img.setAttribute('width', qrImageWidth)
+                container.insertBefore(img, container.lastChild.nextSibling)
+            }
+        };
+
+        var renderQrCode = function(id, qrCodeImage){
+            creatImageContainer(id, qrCodeImage)
+            let qrImage = document.getElementById("whatsappLink-QRcode-" + id);
+            qrImage.setAttribute('href', qrCodeImage)
+            qrImage.addEventListener("click", ()=> removeQrCode(id), {once:true})
+        };
+
+        RED.comms.subscribe("whatsappLinkQrCode", function (e, msg) {
+            if (msg.image === null){
+                removeQrCode(msg.id);
+            }
+            renderQrCode(msg.id, msg.image);   
+        });
+
+    })()
 </script>
 
 <script type="text/html" data-template-name="admin">
@@ -29,6 +69,9 @@
    
 <script type="text/markdown" data-help-name="admin">
 Node used for Admin related tasks of whatsapp.
+
+Node used for first time users to connect with whatsapp and other admin related tasks. </br>
+Admin Node generate QR Code just below the node for easy connection with whatsapp.
 
 | Inputs | Description           |
 |--------|--------------         |

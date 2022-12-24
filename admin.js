@@ -60,20 +60,30 @@ module.exports = function(RED) {
 
         
         //whatsapp Status Parameters----
+        SetStatus("Connecting whatsapp...", "yellow");
+
         node.waClient.on('qr', (qr) => {
-            SetStatus("QR Code Generated", "yellow");
+            SetStatus("Scan QR code to connect.", "yellow");
             QRCode.toDataURL(qr, function(err, url){
                 msg = {payload : url};
                 node.send(msg);
+                let qrImageWithID = {};
+                qrImageWithID.id = node.id;
+                qrImageWithID.image = url;
+                RED.comms.publish("whatsappLinkQrCode", qrImageWithID);
             });
         });
         
         node.waClient.on('auth_failure', () => {
-            SetStatus('Not Connected','red');
+            SetStatus('Connection Fail.','red');
         });
                 
         node.waClient.on('loading_screen', () => {
             SetStatus('Connecting...','yellow');
+            let qrImageWithID = {};
+            qrImageWithID.id = node.id;
+            qrImageWithID.image = null;
+            RED.comms.publish("whatsappLinkQrCode", qrImageWithID);
         });
         
         node.waClient.on('ready', () => {

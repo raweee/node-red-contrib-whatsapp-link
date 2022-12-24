@@ -18,7 +18,6 @@ module.exports = function(RED) {
                 WAnode.log("Status : Initializing Whatsapp..");
             }
             catch(e) {
-                WAnode.log(`Error : ${e}`);
                 WAnode.log(`Error : Unable to start Whatsapp. Try Again..`);
             };
 
@@ -56,8 +55,7 @@ module.exports = function(RED) {
                 }
             }
             catch(e){
-                WAnode.log(`Error : ${e}`);
-                WAnode.log(`Error : Need to restart the Node.`);
+                WAnode.log(`Error : Connection is slow...`);
             }
         };
         let connectionSetupID = setInterval(connectionSetup, 10000);  

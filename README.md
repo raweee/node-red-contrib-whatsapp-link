@@ -6,17 +6,20 @@ Currently in developing mode, Continous updated may encounter. :sweat_smile:
 Missing Nodes ? : To avoid long names, Node names are updated. If some node are missing after update please re-configure the update node, it will not change again. 
 
 ## To Connect with Whatsapp 
-1. Deploy any whatsapp node along with whatsappLink node.
-2. look in Console/ Bash/ terminal.
-3. whatsappLink node will initilize, connect with whatsapp and generate a QR code it terminal.
-4. Scan the QR code with your Whatsapp Mobile App (Go to settings > Linked device > Scan & Connect).
-5. Done - Whatsapp Connected.
 
- *It will create a Whatsapp Web instance in your machine and store your session locally in Node-RED.*
+1. Deploy whatsapp admin node (along with whatsappLink node).
+2. whatsappLink node will initilize, connect with whatsapp and generate a <b>QR code below the Admin Node </b> and in terminal also.
+3. Scan the QR code with your Whatsapp Mobile App (Go to settings > Linked device > Scan & Connect).
+4. Done - Whatsapp Connected.
+
+ *It will create a Whatsapp Web instance in your machine and store your session locally in Node-RED. All session is store in `.wwebjs_auth` folder*
+ 
 
 
 ## Nodes
-1. **Whatsapp Admin** : Node used for basic status of whatsapp.
+1. **Whatsapp Admin** : Node used for  first time users to connect with whatsapp and other admin related tasks. </br>
+Admin Node generate QR Code just below the node for easy connection with whatsapp.
+
     
 
     | Inputs | Description           |

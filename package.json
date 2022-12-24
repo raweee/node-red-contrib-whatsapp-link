@@ -29,6 +29,7 @@
     }
   },
   "dependencies": {
+    "puppeteer": "latest",
     "qrcode": "^1.5.1",
     "whatsapp-web.js": "^1.18.4"
   },
