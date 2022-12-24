@@ -6,6 +6,7 @@ Currently in developing mode, Continous updated may encounter. :sweat_smile:
 Missing Nodes ? : To avoid long names, Node names are updated. If some node are missing after update please re-configure the update node, it will not change again. 
 
 ## To Connect with Whatsapp 
+![](./.github/admin_login.gif)
 
 1. Deploy whatsapp admin node (along with whatsappLink node).
 2. whatsappLink node will initilize, connect with whatsapp and generate a <b>QR code below the Admin Node </b> and in terminal also.
