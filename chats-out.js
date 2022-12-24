@@ -16,6 +16,10 @@ module.exports = function(RED) {
                 node.number = `${node.number}@c.us`;
                 try {
                     node.waClient.sendMessage(node.number, message.payload);
+                    SetStatus("Message Send.", "green");
+                    setTimeout(()=>{
+                        SetStatus('Connected','green');
+                    }, 3000)
                 }
                 catch(e) {
                     node.log(`Error Sending Msg: ${e}`);

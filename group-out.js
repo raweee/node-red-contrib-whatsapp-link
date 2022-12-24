@@ -6,12 +6,21 @@ module.exports = function(RED) {
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
 
+        SetStatus("Message Send.", "green");
+        setTimeout(()=>{
+            SetStatus('Connected','green');
+        }, 3000)
+        
         node.on('input', (message)=> {
             if(node.gID){
                 try {
                     node.gID = node.gID.replace(/\D/g, '');
                     node.gID = `${node.gID}@g.us`;
                     node.waClient.sendMessage(node.gID, message.payload);
+                    SetStatus("Message Send.", "green");
+                    setTimeout(()=>{
+                        SetStatus('Connected','green');
+                    }, 3000)
                 }
                 catch(e) {
                     node.log(`Error Sending Msg: ${e}`);
@@ -24,9 +33,6 @@ module.exports = function(RED) {
                 }, 5000)
             };
         });
-        function SetStatus(WAStatus, color){
-            node.status({fill:color,shape:"dot",text:WAStatus});
-        };
 
         //whatsapp Status Parameters----
         node.waClient.on('qr', (qr) => {
