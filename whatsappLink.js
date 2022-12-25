@@ -15,7 +15,10 @@ module.exports = function(RED) {
             authStrategy : new LocalAuth({
                 dataPath : whatsappLinkDir
             }),
-            puppeteer : {headless : true }
+            puppeteer : {
+                headless : true,
+                args : ['--no-sandbox', '--disable-setuid-sandbox']
+            }
         });
         
         let WAConnect = function(){
