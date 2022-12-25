@@ -6,11 +6,10 @@ module.exports = function(RED) {
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
 
-        SetStatus("Message Send.", "green");
-        setTimeout(()=>{
-            SetStatus('Connected','green');
-        }, 3000)
-        
+        let SetStatus = function(WAStatus, color){
+            node.status({fill:color,shape:"dot",text:WAStatus});
+        };
+
         node.on('input', (message)=> {
             if(node.gID){
                 try {
