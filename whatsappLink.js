@@ -1,14 +1,20 @@
 module.exports = function(RED) {
     const { Client, LocalAuth } = require('whatsapp-web.js');
     const QRCode = require('qrcode');
+    const OS = require('os');
+    const Path = require('path');
 
-    function RemoteClientNode(n) {
+        let userDir = OS.homedir();
+        let whatsappLinkDir = Path.join(userDir, '.node-red', 'Whatsapp-Link');
+        function RemoteClientNode(n) {
         RED.nodes.createNode(this,n);
         let WAnode = this;
         let whatsappConnectionStatus;
 
         const client = new Client({
-            authStrategy : new LocalAuth(),
+            authStrategy : new LocalAuth({
+                dataPath : whatsappLinkDir
+            }),
             puppeteer : {headless : true }
         });
         

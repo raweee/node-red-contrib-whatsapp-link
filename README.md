@@ -9,7 +9,7 @@ Missing Nodes ? : To avoid long names, Node names are updated. If some node are 
 ![](./.github/admin_login.gif)
 
 1. Deploy whatsapp admin node (along with whatsappLink node).
-2. whatsappLink node will initilize, connect with whatsapp and generate a <b>QR code below the Admin Node </b> and in terminal also.
+2. whatsappLink node will initilize, connect with whatsapp and generate a <b>QR code below the Admin Node </b> (in terminal also).
 3. Scan the QR code with your Whatsapp Mobile App (Go to settings > Linked device > Scan & Connect).
 4. Done - Whatsapp Connected.
 
