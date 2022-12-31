@@ -53,7 +53,7 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
     | `msg.message` | Complete message object. <br />*Some extra details for advance users* |
 
 
-3. **Chats Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
+3. **Chats Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node or defined in `msg.payload`.
 
      *Don't forget to mention international dialing code befor your number. Number must be in format like `+11 99999 99999` without any space.* 
 
