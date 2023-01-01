@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    RED.nodes.registerType('reply',{
+        category: 'whatsapp',
+        color: '#25D366',
+        defaults: {
+            name: {value:"Reply"},
+            instruction : {value : ""},
+            whatsappLink: {value:"whatsapp-web", type:'whatsappLink'}        
+        },
+        inputs:1,
+        icon: 'whatsappLink.svg',
+        label: function() {
+            return this.name||"Reply";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="reply">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-whatsappLink"><i class="fa fa-gear"></i> Client</label>
+        <input type="text" id="node-input-whatsappLink" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-instruction"><i class="fa fa-tag"></i> Instruction</label>
+        <input type="text" id="node-input-instruction" placeholder="instruction">
+    </div>
+    <div class="form-tips">
+        <p>Node to reply on message.</p>
+    </div>
+</script>
+  
+   
+<script type="text/markdown" data-help-name="reply">
+Node to reply on meassage recived.
+</script>
