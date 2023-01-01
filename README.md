@@ -2,8 +2,8 @@
 
 Simple node for connecting Node-Red to Whatsapp :iphone:
 
-Currently in developing mode, Continous updated may encounter. :sweat_smile:
-Missing Nodes ? : To avoid long names, Node names are updated. If some node are missing after update please re-configure the update node, it will not change again. 
+Currently in developing mode, Continous updated may encounter. :sweat_smile: 
+ 
 
 ## To Connect with Whatsapp 
 ![](./.github/admin_login.gif)
@@ -12,14 +12,14 @@ Missing Nodes ? : To avoid long names, Node names are updated. If some node are 
 2. whatsappLink node will initilize, connect with whatsapp and generate a <b>QR code below the Admin Node </b> (in terminal also).
 3. Scan the QR code with your Whatsapp Mobile App (Go to settings > Linked device > Scan & Connect).
 4. Done - Whatsapp Connected.
+5. Send "`!nodered`" to get a reply from Node-Red  in Chats/Groups. 
 
- *It will create a Whatsapp Web instance in your machine and store your session locally in Node-RED. All session is store in `.wwebjs_auth` folder*
+ *It will create a Whatsapp Web instance in your machine and store your session locally in Node-RED. All data are store in users  `<user>/.node-red/Whatsapp-Link` folder. Near you Node-Red's settings.js file.*
  
-
 
 ## Nodes
 1. **Whatsapp Admin** : Node used for  first time users to connect with whatsapp and other admin related tasks. </br>
-Admin Node generate QR Code just below the node for easy connection with whatsapp.
+Admin Node generate QR Code just below the node for easy connection with whatsapp. 
 
     
 
@@ -68,12 +68,13 @@ Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-co
 
 * `Ver-0.1.21` : Group Message Node added.
 * `Ver-0.1.23` : Nodes are formatted correctly and names are updated.
-* Working on QR Code to directlly avilable in run time on Whatsapp-Admin-Node.
+* `Ver-0.1.28` : Now QR Codes are directlly avilable in run time on Whatsapp-Admin-Node.
+* Working on Whatsapp Reply Node.  
 
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -
 
-1. Group Message Node (Working).
+1. Group Message Node.
 2. Chat Reply node.
 3. Instruction (smart) Reply Node.
 

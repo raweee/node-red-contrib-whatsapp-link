@@ -30,6 +30,7 @@ module.exports = function(RED) {
                 WAnode.log(`Error : Unable to start Whatsapp. Try Again..`);
             };
 
+            //QR-Code on Terminal and Ready Status. 
             client.on("qr", (qr)=>{
                 clearInterval(connectionSetupID);
                 QRCode.toString(qr, {type : 'terminal', small:true }, function(err, QRTerminal){
@@ -43,6 +44,32 @@ module.exports = function(RED) {
             });
         };
         WAConnect();
+
+        //Whatsapp-Link Test Features (For Status and Testing Only.)
+        client.on('message_create', async (msg)=> {
+            if (msg.body.startsWith('!nodered')){
+                let chat = await msg.getChat();
+                let contact = await msg.getContact();
+                if (chat.isGroup){
+                    let msgReply = 
+`Hi From Node-Red.
+------------------
+Group Name   : ${chat.name},
+Group Id     : ${chat.id.user},
+Group Admin  : ${chat.groupMetadata.owner.user},
+Participants : ${chat.groupMetadata.size}`
+                    msg.reply(msgReply);
+                }
+                else {
+                    let msgReply = `Hi @${contact.number} From Node-Red.`
+                    chat.sendMessage(msgReply, {
+                        mentions : [contact]
+                    });  
+                }
+                
+            }
+
+        });
 
         function WAClose(){
             try { 
