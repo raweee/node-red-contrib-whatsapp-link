@@ -11,11 +11,15 @@ module.exports = function(RED) {
         };
 
         node.on('input', (message)=> {
-            if (node.number){
-                node.number = node.number.replace(/\D/g, '');
-                node.number = `${node.number}@c.us`;
+            let number = node.number;
+            if (message.number != null){
+                number = message.number;
+            }
+            if (number){
+                number = number.replace(/\D/g, '');
+                number = `${number}@c.us`;
                 try {
-                    node.waClient.sendMessage(node.number, message.payload);
+                    node.waClient.sendMessage(number, message.payload);
                     SetStatus("Message Send.", "green");
                     setTimeout(()=>{
                         SetStatus('Connected','green');
