@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-whatsapp-link",
-  "version": "0.1.28A",
+  "version": "0.1.29",
   "description": "Node to send and receive whatsapp chats and group messages. | No third party APIs",
   "repository": {
     "type": "git",

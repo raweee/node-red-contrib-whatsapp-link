@@ -4,8 +4,9 @@
         color: '#25D366',
         defaults: {
             name: {value:"Reply"},
-            instruction : {value : ""},
-            whatsappLink: {value:"whatsapp-web", type:'whatsappLink'}        
+            instruction : {value : "!red"},
+            whatsappLink: {value:"whatsapp-web", type:'whatsappLink'},
+            react : {value: `👍`}        
         },
         inputs:1,
         icon: 'whatsappLink.svg',
@@ -28,12 +29,20 @@
         <label for="node-input-instruction"><i class="fa fa-tag"></i> Instruction</label>
         <input type="text" id="node-input-instruction" placeholder="instruction">
     </div>
+    <hr>
+    <div class="form-row">
+        <label for="node-input-react"><i class="fa fa-tag"></i> Reaction</label>
+        <input type="text" id="node-input-react" placeholder="reaction">
+    </div>
     <div class="form-tips">
-        <p>Node to reply on message.</p>
+        <p> <b>In Beta mode</b></p>
+        <p>Node will reply on each message starting with string mentioned in instruction or defaults `!red`.</p>
     </div>
 </script>
   
    
 <script type="text/markdown" data-help-name="reply">
-Node to reply on meassage recived.
+##In Beta mode
+
+Node will reply on each message starting with string mentioned in instruction or defaults `!red`.
 </script>

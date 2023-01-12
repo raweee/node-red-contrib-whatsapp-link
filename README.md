@@ -60,6 +60,10 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
 4. **Group Message** : Whatsapp Group Node to send message in a Group.
 
     The node will send recived `msg.payload` to a group chat.
+
+5. **Reply Node** : In Beta mode.
+
+Node will reply on each message starting with string mentioned in instruction or defaults `!red`.
     
 
 ## Issues & Updates
@@ -69,14 +73,12 @@ Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-co
 * `Ver-0.1.21` : Group Message Node added.
 * `Ver-0.1.23` : Nodes are formatted correctly and names are updated.
 * `Ver-0.1.28` : Now QR Codes are directlly avilable in run time on Whatsapp-Admin-Node.
-* Working on Whatsapp Reply Node.  
+* Working on Reply Node.  
 
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -
-
-1. Group Message Node.
-2. Chat Reply node.
-3. Instruction (smart) Reply Node.
+1. Chat Reply node. (working)
+2. Instruction (smart) Reply Node.
 
 Complete detail for Nodes will also be updated as soon as possible. 
 

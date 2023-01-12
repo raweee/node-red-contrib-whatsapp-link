@@ -2,7 +2,8 @@ module.exports = function(RED) {
     function WhatsappReply(config) {
         RED.nodes.createNode(this,config);
         var node = this;
-        node.instruction = config.instruction ;
+        node.instruction = config.instruction;
+        node.react = config.react;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
         let instructionPayload = null ;
@@ -20,9 +21,9 @@ module.exports = function(RED) {
                 if(instructionPayload) {
                     message.reply(instructionPayload)
                 } 
-                else {
-                    message.react('😅');
-                    message.reply('👍');
+                else if (node.react){
+                    message.react(node.react);
+                    // message.reply('👍');
                 };
             }
         });

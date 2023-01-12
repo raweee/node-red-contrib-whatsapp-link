@@ -7,43 +7,43 @@ module.exports = function(RED) {
         let userDir = OS.homedir();
         let whatsappLinkDir = Path.join(userDir, '.node-red', 'Whatsapp-Link');
         function RemoteClientNode(n) {
-        RED.nodes.createNode(this,n);
-        let WAnode = this;
-        let whatsappConnectionStatus;
+            RED.nodes.createNode(this,n);
+            let WAnode = this;
+            let whatsappConnectionStatus;
 
-        const client = new Client({
-            authStrategy : new LocalAuth({
-                dataPath : whatsappLinkDir
-            }),
-            puppeteer : {
-                headless : true,
-                args : ['--no-sandbox', '--disable-setuid-sandbox']
-            }
-        });
+            const client = new Client({
+                authStrategy : new LocalAuth({
+                    dataPath : whatsappLinkDir
+                }),
+                puppeteer : {
+                    headless : true,
+                    args : ['--no-sandbox', '--disable-setuid-sandbox']
+                }
+            });
         
-        let WAConnect = function(){
-            try {
-                client.initialize();
-                WAnode.log("Status : Initializing Whatsapp..");
-            }
-            catch(e) {
-                WAnode.log(`Error : Unable to start Whatsapp. Try Again..`);
-            };
+            let WAConnect = function(){
+                try {
+                    client.initialize();
+                    WAnode.log("Status : Initializing Whatsapp..");
+                }
+                catch(e) {
+                    WAnode.log(`Error : Unable to start Whatsapp. Try Again..`);
+                };
 
-            //QR-Code on Terminal and Ready Status. 
-            client.on("qr", (qr)=>{
-                clearInterval(connectionSetupID);
-                QRCode.toString(qr, {type : 'terminal', small:true }, function(err, QRTerminal){
-                    WAnode.log(`To Connect, Scan the QR Code through your Whatsapp Mobile App.`)
-                    console.log("");
-                    console.log(QRTerminal);
+                //QR-Code on Terminal and Ready Status. 
+                client.on("qr", (qr)=>{
+                    clearInterval(connectionSetupID);
+                    QRCode.toString(qr, {type : 'terminal', small:true }, function(err, QRTerminal){
+                        WAnode.log(`To Connect, Scan the QR Code through your Whatsapp Mobile App.`)
+                        console.log("");
+                        console.log(QRTerminal);
+                    });
                 });
-            });
-            client.on("ready", ()=>{
-                WAnode.log(`Status : Whatsapp Connected`);
-            });
-        };
-        WAConnect();
+                client.on("ready", ()=>{
+                    WAnode.log(`Status : Whatsapp Connected`);
+                });
+            };
+            WAConnect();
 
         //Whatsapp-Link Test Features (For Status and Testing Only.)
         client.on('message_create', async (msg)=> {
@@ -74,6 +74,7 @@ Participants : ${chat.groupMetadata.size}`
         function WAClose(){
             try { 
                 client.destroy();
+                WAnode.client.destroy();
             }
             catch(e){
                 WAnode.err(`Error : Too many instructions! Try again.`)
@@ -91,14 +92,14 @@ Participants : ${chat.groupMetadata.size}`
                 }
             }
             catch(e){
-                WAnode.log(`Error : Connection is slow...`);
+                WAnode.log(`Error : Waiting for Initializion...`);
             }
         };
         let connectionSetupID = setInterval(connectionSetup, 10000);  
         
-        let WARestart = async function(){
-            await client.destroy();
-            await client.initialize();
+        let WARestart = function(){
+            WAClose();
+            WAConnect();
         }
 
         this.on('close', (removed, done)=>{
@@ -118,6 +119,7 @@ Participants : ${chat.groupMetadata.size}`
         this.WAConnect = WAConnect;
         this.client = client;
         this.WARestart = WARestart;
+        this.WAClose = WAClose;
         this.whatsappConnectionStatus = whatsappConnectionStatus;
     }
     RED.nodes.registerType("whatsappLink",RemoteClientNode);

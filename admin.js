@@ -8,6 +8,7 @@ module.exports = function(RED) {
         node.waClient = whatsappLinkNode.client;
         node.WARestart = whatsappLinkNode.WARestart;
         node.WAConnect = whatsappLinkNode.WAConnect;
+        node.destroy = whatsappLinkNode.WAClose;
             
         function SetStatus(WAStatus, color){
             node.status({fill:color,shape:"dot",text:WAStatus});
@@ -18,14 +19,14 @@ module.exports = function(RED) {
         // Commands recived for Whatsapp Admin.
         this.on('input', async function(msg, send){
             if (msg.payload === "destroy") {
-                await node.waClient.destroy();
+                node.destroy();
                 SetStatus("Disconnected","red");
             } 
             else if (msg.payload==="logout") {
-                await node.waClient.logout();
+                node.waClient.logout();
                 SetStatus("Logged Out","red");
             }
-            else if (msg.payload === "state"){
+            else if (msg.payload === "test"){
                 msg.payload = await node.waClient.getState();
                 node.send(msg);
             }           
