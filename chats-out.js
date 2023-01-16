@@ -9,30 +9,42 @@ module.exports = function(RED) {
         let SetStatus = function(WAStatus, color){
             node.status({fill:color,shape:"dot",text:WAStatus});
         };
+        const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-        node.on('input', (message)=> {
-            if (node.number){
-                node.number = node.number.replace(/\D/g, '');
-                node.number = `${node.number}@c.us`;
+        function whatsappMessage(numb , inputMessage){
+            if (node.waClient){
                 try {
-                    node.waClient.sendMessage(node.number, message.payload);
+                    numb = typeof numb ==='number' ? numb : numb.replace(/\D/g, '');
+                    numb = `${numb}@c.us`;
+                    node.waClient.sendMessage(numb, inputMessage);
                     SetStatus("Message Send.", "green");
                     setTimeout(()=>{
                         SetStatus('Connected','green');
-                    }, 3000)
+                    }, 2000)
                 }
                 catch(e) {
                     node.log(`Error Sending Msg: ${e}`);
-                };
-            } 
-            else {
+                }
+            } else { node.log(`Error Sending Msg: ${e}`)}
+        };
+
+        node.on('input', (message)=> {
+            if (node.number){
+                whatsappMessage(node.number, message.payload);
+
+            } else if (message.toNumber){
+                var numbers = typeof message.toNumber === 'number' ? Array.of(message.toNumber) : message.toNumber;
+                for (number of numbers) {
+                    setTimeout(()=> {
+                        whatsappMessage(number, message.payload)}
+                        , 3000);
+                }
+            } else {
                 SetStatus("No number","red");
                 setTimeout(()=>{
                     SetStatus('Connected','green');
                 }, 5000)
             }
-
-
         });
 
         //whatsapp Status Parameters----

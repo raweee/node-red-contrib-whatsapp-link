@@ -55,7 +55,14 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
 
 3. **Chats Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
-     *Don't forget to mention international dialing code befor your number. Number must be in format like `+11 99999 99999` without any space.* 
+    <p>Don't forget to mention international dialing code befor your number.
+    Number must be in format like <b>+11 99999 99999</b> without any space.</p>
+    <P><b>OR</b></P>
+    <P>Leave the Number blank and provide the number along with paylod 
+        at `msg.toNumber` with international code.</P>
+    <p>To send message on multiple contacts an Arrar of number can be passed
+        on `msg.toNumber` like `msg.toNumber = [+1199999999, +12990000099, +1311111111].
+        </p>
 
 4. **Group Message** : Whatsapp Group Node to send message in a Group.
 
@@ -63,7 +70,7 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
 
 5. **Reply Node** : In Beta mode.
 
-Node will reply on each message starting with string mentioned in instruction or defaults `!red`.
+Node will reply(the `payload`) on each message starting with string mentioned in instruction coloum or defaults `!red`.
     
 
 ## Issues & Updates
@@ -73,11 +80,14 @@ Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-co
 * `Ver-0.1.21` : Group Message Node added.
 * `Ver-0.1.23` : Nodes are formatted correctly and names are updated.
 * `Ver-0.1.28` : Now QR Codes are directlly avilable in run time on Whatsapp-Admin-Node.
+* `Ver-0.1.30` : Message can be send to an  Array of contacts provided at `msg.toNumber`.
 * Working on Reply Node.  
 
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -
 1. Chat Reply node. (working)
+2. Whatsapp button message.
+3. Whatsapp List message.
 2. Instruction (smart) Reply Node.
 
 Complete detail for Nodes will also be updated as soon as possible. 
