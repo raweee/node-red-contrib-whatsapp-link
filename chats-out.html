@@ -47,5 +47,12 @@ Node to send whatsapp messages.
 
 As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
+MultiMedia Message Out: Requirments-
+| Input | Description |
+|--------|-------------|
+| `msg.image` | Base64 (encoded image) |
+| `msg.payload`   | Image Caption |
+| `msg.toNumber` | Sender number (if number not provided in node) |
+
 -*Don't forget to mention international dialing code befor your number. Number must be in format like `+11 99999 99999` without any space.* 
 </script>
