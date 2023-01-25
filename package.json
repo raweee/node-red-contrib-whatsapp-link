@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-whatsapp-link",
-  "version": "0.1.30",
+  "version": "0.1.32",
   "description": "Node to send and receive whatsapp messages in groups and chats. | No third party APIs",
   "repository": {
     "type": "git",
@@ -25,13 +25,14 @@
       "whatsapp chats-in": "chats-in.js",
       "whatsapp chats-out": "chats-out.js",
       "whatsapp group-out": "group-out.js",
-      "whatsapp reply": "reply.js",
+      "whatsapp reply": "whatsappReply.js",
       "whatsapp Link": "whatsappLink.js"
     }
   },
   "dependencies": {
     "qrcode": "^1.5.1",
-    "whatsapp-web.js": "latest"
+    "whatsapp-web.js": "latest",
+    "@adiwajshing/baileys": "^5.0.0"
   },
   "engines": {
     "node": ">=8.0.0"

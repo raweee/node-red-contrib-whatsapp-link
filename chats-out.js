@@ -12,21 +12,34 @@ module.exports = function(RED) {
         };
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-        function whatsappMessage(numb , inputMessage){
-            if (node.waClient){
+        async function whatsappMessage(numb , inputMessage){
+            numb = typeof numb ==='number' ? numb : numb.replace(/\D/g, '');
+            if (node.waClient.clientType === "waWebClient"){
                 try {
-                    numb = typeof numb ==='number' ? numb : numb.replace(/\D/g, '');
                     numb = `${numb}@c.us`;
                     node.waClient.sendMessage(numb, inputMessage);
-                    SetStatus("Message Send.", "green");
-                    setTimeout(()=>{
-                        SetStatus('Connected','green');
-                    }, 2000)
                 }
                 catch(e) {
                     node.log(`Error Sending Msg: ${e}`);
                 }
-            } else { node.log(`Error Sending Msg: ${e}`)}
+            } 
+            else if (node.waClient.clientType === "waSocketClient"){
+                try {
+                    let client = await node.waClient;
+                    numb = `${numb}@s.whatsapp.net`;
+                    const msgStatus = await client.sendMessage(numb, {text : inputMessage});
+                }
+                catch(e) {
+                    node.log(`Error Sending Msg: ${e}`);
+                }
+            } 
+            else { 
+                node.log(`Error Sending Msg: ${e}`)
+            }
+            SetStatus("Message Send.", "green");
+            setTimeout(()=>{
+                SetStatus('Connected','green');
+            }, 2000)
         };
 
         function whatsappMultiMediaMessage(numb, whatsappImage, whatsappCaption){
@@ -76,25 +89,52 @@ module.exports = function(RED) {
         });
 
         //whatsapp Status Parameters----
-        node.waClient.on('qr', (qr) => {
-            SetStatus("QR Code Generated", "yellow");
-        });
-        
-        node.waClient.on('auth_failure', () => {
-            SetStatus('Not Connected','red');
-        });
-                
-        node.waClient.on('loading_screen', () => {
-            SetStatus('Connecting...','yellow');
-        });
-        
-        node.waClient.on('ready', () => {
-            SetStatus('Connected','green');
-        });
+        if (node.waClient.clientType === "waWebClient"){
+            node.waClient.on('qr', (qr) => {
+                SetStatus("QR Code Generated", "yellow");
+            });
+            
+            node.waClient.on('auth_failure', () => {
+                SetStatus('Not Connected','red');
+            });
+                    
+            node.waClient.on('loading_screen', () => {
+                SetStatus('Connecting...','yellow');
+            });
+            
+            node.waClient.on('ready', () => {
+                SetStatus('Connected','green');
+            });
 
-        node.waClient.on('disconnected', () => {
-            SetStatus("Disconnected","red");
-        });
+            node.waClient.on('disconnected', () => {
+                SetStatus("Disconnected","red");
+            });
+
+        } else if (node.waClient.clientType === "waSocketClient"){
+            async function checkStatusOfSockets(){
+                let client = await node.waClient;
+                client.ev.on('connection.update', (updates)=>{
+                    var {connection} = updates
+                    if(connection === 'open'){
+                        SetStatus("Connected", "green");
+                    }
+                    else if(updates.isOnline){
+                        SetStatus("Connected", "green");
+                    }
+                    else if(connection === 'close'){
+                        SetStatus("Disconnected", "red");
+                    }
+                    else if(connection === 'connecting'){
+                        SetStatus("Connecting...", "yellow");
+                    }
+                    else if(updates.is){
+                        SetStatus("Scan QR Code to Connect.", "yellow");
+                    }
+                })
+            }
+            checkStatusOfSockets();
+
+        }
 
     }
     RED.nodes.registerType("chats-out", WhatsappOut);

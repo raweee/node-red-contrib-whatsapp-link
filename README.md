@@ -4,8 +4,6 @@ Simple node for connecting Node-Red to Whatsapp :iphone:
 
 Currently in developing mode, Continous updated may encounter. :sweat_smile: 
 
-Working on WhatsappLite (Lite version of whatsapp Web baised on web sockets.)
- 
 
 ## To Connect with Whatsapp 
 ![](./.github/admin_login.gif)
@@ -15,6 +13,15 @@ Working on WhatsappLite (Lite version of whatsapp Web baised on web sockets.)
 3. Scan the QR code with your Whatsapp Mobile App (Go to settings > Linked device > Scan & Connect).
 4. Done - Whatsapp Connected.
 5. Send "`!nodered`" to get a reply from Node-Red  in Chats/Groups. 
+
+### if Whatsapp Web not working ?
+Their is lite version also avilable in it. Totally different from Whatapp-Web,
+Whatsapp-Lite (Beta Mode) works on Web-Sockets only, It might work for you also.
+
+Simply chosse `Whatsapp Lite` in Whatsapp-Link configration node. 
+
+![](./.github/WhatsaaLite.png)
+
 
  *It will create a Whatsapp Web instance in your machine and store your session locally in Node-RED. All data are store in users  `<user>/.node-red/Whatsapp-Link` folder. Near you Node-Red's settings.js file.*
  
@@ -62,7 +69,7 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
     |--------|-------------|
     | `msg.image` | Base64 (encoded image) |
     | `msg.payload`   | Image Caption |
-    | `msg.toNumber` | Sender number (if number not provided in node) |
+    | `msg.toNumber` | Reciver number (if number not provided in node) |
 
     Don't forget to mention international dialing code befor your number.
     Number must be in format like <b>+11 99999 99999</b> without any space.
@@ -88,7 +95,7 @@ Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-co
 * `Ver-0.1.23` : Nodes are formatted correctly and names are updated.
 * `Ver-0.1.28` : Now QR Codes are directlly avilable in run time on Whatsapp-Admin-Node.
 * `Ver-0.1.30` : Message can be send to an  Array of contacts provided at `msg.toNumber`.
-* Working on WhatsappLite.  
+* `Ver-0.1.32` : Socket based `Whatsapp Lite` config node added in beta mode. Image message sending support added in chats-out node. 
 
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -
