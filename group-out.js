@@ -5,36 +5,58 @@ module.exports = function(RED) {
         node.number = config.gID;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
-        const { MessageMedia } = require('whatsapp-web.js')
+
+        const { MessageMedia, Buttons } = require('whatsapp-web.js')
 
         let SetStatus = function(WAStatus, color){
             node.status({fill:color,shape:"dot",text:WAStatus});
         };
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-        async function whatsappMessage(numb , inputMessage){
+        function webNubmerSeteing(numb){
             numb = typeof numb ==='number' ? numb : numb.replace(/\D/g, '');
+            numb = `${numb}@g.us`;
+            return numb
+        }
+
+        function socNubmerSeteing(numb){
+            numb = typeof numb ==='number' ? numb : numb.replace(/\D/g, '');
+            numb = `${numb}@g.us`
+            return numb
+        }
+
+        async function whatsappMessage(numb , inputMessage){
             if (node.waClient.clientType === "waWebClient"){
                 try {
-                    numb = `${numb}@g.us`;
+                    numb = webNubmerSeteing(numb);
+                    if(typeof inputMessage === "object"){
+                        // inputMessage = new Buttons(inputMessage.text, inputMessage.buttons, "text" ,inputMessage.footer)   
+                        let myBtn = new Buttons('Button body',[{body:'bt1'},{body:'bt2'},{body:'bt3'}],'title','footer');
+                        console.log(myBtn)
+                        node.waClient.sendMessage(numb, inputMessage);
+                        inputMessage = myBtn
+                    }
                     node.waClient.sendMessage(numb, inputMessage);
                 }
-                catch(e) {
-                    node.log(`Error Sending Msg: ${e}`);
+                catch(e){
+                    node.error(`Error Sending Msg: ${e}`);
                 }
             } 
             else if (node.waClient.clientType === "waSocketClient"){
                 try {
                     let client = await node.waClient;
-                    numb = `${numb}@g.us`;
-                    const msgStatus = await client.sendMessage(numb, {text : inputMessage});
+                    numb = socNubmerSeteing(numb)
+                    if (typeof inputMessage ==="string"){
+                        inputMessage = {text : inputMessage};
+                    }
+                    const msgStatus = await client.sendMessage(numb, inputMessage);
                 }
                 catch(e) {
-                    node.log(`Error Sending Msg: ${e}`);
+                    node.error(`Error Sending Msg: ${e}`);
                 }
             } 
             else { 
-                node.log(`Error Sending Msg: ${e}`)
+                node.error(`Error Sending Msg: ${e}`)
             }
             SetStatus("Message Send.", "green");
             setTimeout(()=>{
@@ -42,20 +64,31 @@ module.exports = function(RED) {
             }, 2000)
         };
 
-        function whatsappMultiMediaMessage(numb, whatsappImage, whatsappCaption){
+        async function whatsappMultiMediaMessage(numb, whatsappImage, whatsappCaption){
+            var whatsappImageBase64 = whatsappImage.split(',')[1] || whatsappImage;
             try {
-                numb = node.number;
-                whatsappImage = whatsappImage.split(',')[1] || whatsappImage;
-                var myMessage = new MessageMedia('image/png', whatsappImage, null, null);
-                numb = typeof numb ==='number' ? numb : numb.replace(/\D/g, '');
-                numb = `${numb}@g.us`;
-                node.waClient.sendMessage(numb, myMessage, {caption : whatsappCaption || "Image from Node-Red"});
+                if (node.waClient.clientType === "waWebClient"){
+                    numb = webNubmerSeteing(node.number)
+                    var myMessage = new MessageMedia('image/png', whatsappImageBase64, null, null);
+                    node.waClient.sendMessage(numb, myMessage, {caption : whatsappCaption || "Image from Node-Red"});
+                } 
+                else {
+                    numb = socNubmerSeteing(node.number)
+                    const imageMessage = {
+                        text: whatsappCaption,
+                        footer: null,
+                        templateButtons: null,
+                        image: {url : whatsappImage }
+                    };
+                    let client = await node.waClient;
+                    const msgStatus = await client.sendMessage(numb, imageMessage);
+                }              
                 SetStatus("Message Send.", "green");
                 setTimeout(()=>{
                     SetStatus('Connected','green');
                 }, 2000)
             } catch(e) {
-                node.log(`Error sending MultiMedia Message : ${e}`)
+                node.error(`Error sending MultiMedia Message : ${e}`)
             }
         };
 
@@ -63,8 +96,8 @@ module.exports = function(RED) {
             if (node.number){
                 if (message.image){
                     whatsappMultiMediaMessage(node.number, message.image, message.payload);       
-                } 
-                else { 
+                }  
+                else {
                     whatsappMessage(node.number, message.payload);
                 }
 
@@ -87,6 +120,8 @@ module.exports = function(RED) {
                 }, 5000)
             }
         });
+
+
 
         //whatsapp Status Parameters----
         if (node.waClient.clientType === "waWebClient"){
@@ -127,7 +162,7 @@ module.exports = function(RED) {
                     else if(connection === 'connecting'){
                         SetStatus("Connecting...", "yellow");
                     }
-                    else if(updates.is){
+                    else if(updates.qr){
                         SetStatus("Scan QR Code to Connect.", "yellow");
                     }
                 })
@@ -135,56 +170,6 @@ module.exports = function(RED) {
             checkStatusOfSockets();
 
         }
-
-
-
-
-
-
-
-        // node.on('input', (message)=> {
-        //     if(node.gID){
-        //         try {
-        //             node.gID = node.gID.replace(/\D/g, '');
-        //             node.gID = `${node.gID}@g.us`;
-        //             node.waClient.sendMessage(node.gID, message.payload);
-        //             SetStatus("Message Send.", "green");
-        //             setTimeout(()=>{
-        //                 SetStatus('Connected','green');
-        //             }, 3000)
-        //         }
-        //         catch(e) {
-        //             node.log(`Error Sending Msg: ${e}`);
-        //         };
-        //     }
-        //     else {
-        //         SetStatus("No Chat-ID","red");
-        //         setTimeout(()=>{
-        //             SetStatus('Connected','green');
-        //         }, 5000)
-        //     };
-        // });
-
-        //whatsapp Status Parameters----
-        node.waClient.on('qr', (qr) => {
-            SetStatus("QR Code Generated", "yellow");
-        });
-        
-        node.waClient.on('auth_failure', () => {
-            SetStatus('Not Connected','red');
-        });
-                
-        node.waClient.on('loading_screen', () => {
-            SetStatus('Connecting...','yellow');
-        });
-        
-        node.waClient.on('ready', () => {
-            SetStatus('Connected','green');
-        });
-
-        node.waClient.on('disconnected', () => {
-            SetStatus("Disconnected","red");
-        });
 
     }
     RED.nodes.registerType("group-out", WhatsappGroupOut);

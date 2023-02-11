@@ -49,7 +49,7 @@ module.exports = function(RED) {
                 
                 client.ev.on('messages.upsert', msgs =>{
                     msgs.messages.forEach(async msg =>{
-                        msg.payload = msg.message.conversation;
+                        msg.payload = msg.message?.conversation;
                         msg.from = msg.key.participant || msg.key.remoteJid;
                         msg.from = msg.from.replace(/\D/g, '') || msg.from;
                         msg.chatID = msg.key.remoteJid.replace(/\D/g, '') || msg.key.remoteJid ;
@@ -73,7 +73,7 @@ module.exports = function(RED) {
                     else if(connection === 'connecting'){
                         SetStatus("Connecting...", "yellow");
                     }
-                    else if(updates.is){
+                    else if(updates.qr){
                         SetStatus("Scan QR Code to Connect.", "yellow");
                     }
                 })

@@ -24,15 +24,10 @@
             }
         };
 
-        var adminNodeId = null;
-        RED.comms.subscribe("whatsappLinkNodeID", function (e, currentID) {
-            adminNodeId = currentID;
-        })
-
         var creatImageContainer = function(NodeID) {
             let img = document.getElementById("whatsappLink-QRcode-" + NodeID)
             if (!img) {
-                const container = document.getElementById(adminNodeId)
+                const container = document.getElementById(NodeID)
                 if (!container) { return }
                 const img = document.createElementNS("http://www.w3.org/2000/svg", 'image')
                 img.setAttribute('id', "whatsappLink-QRcode-" + NodeID)
@@ -50,9 +45,10 @@
             qrImage.addEventListener("click", ()=> removeQrCode(id), {once:true})
         };
 
+
         RED.comms.subscribe("whatsappLinkQrCode", function (e, msg) {
             if (msg.image === null){
-                removeQrCode(msg.id);
+                removeQrCode(adminNodeId);
             }
             renderQrCode(msg.id, msg.image);   
         });

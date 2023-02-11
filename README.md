@@ -64,7 +64,7 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
 
 3. **Chats Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
-    MultiMedia Message Out: Requirments-
+    MultiMedia Message: Requirments-
     | Input | Description |
     |--------|-------------|
     | `msg.image` | Base64 (encoded image) |
@@ -82,9 +82,192 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
 
     The node will send recived `msg.payload` to a group chat.
 
+## Button, List and TemplateButton
+Supported in Whatsapp-Lite only, `TODO for Whatsapp-Web`. 
+
+* <b>Simple Button </b>For simple 3 Bottons your `msg.paylod` should be... 
+
+```js
+msg.payload = {
+    text: "Hi it's button message", //String
+    footer: 'Hello World',          //String
+    headerType: 1,                  //keep it "1" only.
+    buttons: [                      // Array of buttons.
+        {buttonId: 'id1', buttonText: {displayText: 'Button 1'}, type: 1},
+        {buttonId: 'id2', buttonText: {displayText: 'Button 2'}, type: 1},
+        {buttonId: 'id3', buttonText: {displayText: 'Button 3'}, type: 1}
+    ]
+}
+```
+* <b>TemplateButton</b> combination of <b>link button</b>, <b>Call button</b> and Normal buttons. Your `msg.paylod` should look similar to--
+
+```js
+msg.payload = {
+    text: "Hi it's a template message by Node-RED 👍 to Test",
+    footer: 'Hello I am footer of message.',
+    templateButtons: [
+        {index: 1, urlButton: {displayText: '⭐ Vist Node-RED', url: 'https://nodered.org/'}},
+        {index: 2, callButton: {displayText: 'Call me!', phoneNumber: '+1 (234) 5678-901'}},
+        {index: 3, quickReplyButton: {displayText: 'Click me I am Button', id: 'I-am-button-id-without-space'}},
+        {index: 4, quickReplyButton: {displayText: '🖱️ Sample Button 2', id: 'button-2-was-clicked'}}
+    ]
+}
+```
+* <b>List Message</b> combination of <b>link button</b>, <b>List button</b> and Selectors. Your `msg.paylod` should look similar to--
+
+```js
+msg.payload = {
+  text: "This is a list",
+  footer: "nice footer, link: https://google.com",
+  title: "Amazing boldfaced list title",
+  buttonText: "Required, Tap to see List",
+  sections : [{
+	title: "Section 1",
+	rows: [
+	    {title: "Option 1", rowId: "option1"},
+	    {title: "Option 2", rowId: "option2", description: "This is a description"}
+	]},
+   {
+	title: "Section 2",
+	rows: [
+	    {title: "Option 3", rowId: "option3"},
+	    {title: "Option 4", rowId: "option4", description: "This is a description V2"}
+	]
+    }]
+}
+
+```
+Yes its lot require for buttons, A node will come soon to minimize these effors. 
+You may direct import these test button with bellow code. 
+
+```json
+[
+    {
+        "id": "6fe81f4418014185",
+        "type": "inject",
+        "z": "a133618d7af8d486",
+        "name": "Sample button Text",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 180,
+        "wires": [
+            [
+                "ad52615eb46ed55b"
+            ]
+        ]
+    },
+    {
+        "id": "cf275a62edbc347f",
+        "type": "inject",
+        "z": "a133618d7af8d486",
+        "name": "Smart Button Test",
+        "props": [
+            {
+                "p": "topic",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 130,
+        "y": 140,
+        "wires": [
+            [
+                "f5fbed87687de5b7"
+            ]
+        ]
+    },
+    {
+        "id": "f5fbed87687de5b7",
+        "type": "function",
+        "z": "a133618d7af8d486",
+        "name": "TempButton",
+        "func": "msg.payload = {\n   text: \"Hi it's a template message by Node-RED 👍 to Test\",\n   footer: 'Hello I am footer of message.',\n   templateButtons: [\n       {\n           index: 1,\n           urlButton: {\n               displayText: '⭐ Vist Node-RED',\n               url: 'https://nodered.org/'\n           }\n       },\n       {\n           index: 2,\n           callButton: {\n               displayText: 'Call me!',\n               phoneNumber: '+1 (234) 5678-901'\n           }\n       },\n       {\n           index: 3,\n           quickReplyButton: {\n               displayText: 'Click me I am Button',\n               id: 'id-like-buttons-message'\n           }\n       },\n       {\n           index: 4,\n           quickReplyButton: {\n               displayText: '🖱️ Sample Button',\n               id: 'button-id-no-space'\n           }\n       }] \n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 140,
+        "wires": [
+            [
+                "9caf4dd912ca82f6"
+            ]
+        ]
+    },
+    {
+        "id": "ad52615eb46ed55b",
+        "type": "function",
+        "z": "a133618d7af8d486",
+        "name": "Button",
+        "func": "msg.payload = {\n      text: \"Hi it's button message\",\n      footer: 'Hello World',\n      headerType: 1,\n      buttons: [\n            {buttonId: 'id1', buttonText: {displayText: 'Button 1'}, type: 1},\n            {buttonId: 'id2', buttonText: {displayText: 'Button 2'}, type: 1},\n            {buttonId: 'id3', buttonText: {displayText: 'Button 3'}, type: 1}\n        ]\n }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 180,
+        "wires": [
+            [
+                "9caf4dd912ca82f6"
+            ]
+        ]
+    },
+    {
+        "id": "670571eb76e4d237",
+        "type": "comment",
+        "z": "a133618d7af8d486",
+        "name": "Connect them to Chats-Out Node. ",
+        "info": "Dont foget mobile no.",
+        "x": 160,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "9caf4dd912ca82f6",
+        "type": "chats-out",
+        "z": "a133618d7af8d486",
+        "name": "Chats Out",
+        "whatsappLink": "whatsapp-web",
+        "number": "",
+        "x": 620,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "3e0550933ed06e84",
+        "type": "comment",
+        "z": "a133618d7af8d486",
+        "name": "Mention Your Phone No. in node.",
+        "info": "",
+        "x": 610,
+        "y": 120,
+        "wires": []
+    }
+]
+```
+
+
 5. **Reply Node** : In Beta mode.
 
-Node will reply(the `payload`) on each message starting with string mentioned in instruction coloum or defaults `!red`.
+Node will reply(the `payload`) on each message starting with string mentioned in instruction coloum or defaults `!red`. Avoid using it please.
     
 
 ## Issues & Updates
@@ -96,6 +279,7 @@ Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-co
 * `Ver-0.1.28` : Now QR Codes are directlly avilable in run time on Whatsapp-Admin-Node.
 * `Ver-0.1.30` : Message can be send to an  Array of contacts provided at `msg.toNumber`.
 * `Ver-0.1.32` : Socket based `Whatsapp Lite` config node added in beta mode. Image message sending support added in chats-out node. 
+* `Ver-0.1.33` : Button and list support added, Minnor bugs fixed. 
 
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -

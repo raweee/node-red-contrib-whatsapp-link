@@ -6,7 +6,7 @@ module.exports = function(RED) {
         var node = this;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.client = whatsappLinkNode.client;
-        RED.comms.publish("whatsappLinkNodeID", node.id)
+        // RED.comms.publish("whatsappLinkNodeID", node.id)
             
         function SetStatus(WAStatus, color){
             node.status({fill:color,shape:"dot",text:WAStatus});
@@ -15,33 +15,53 @@ module.exports = function(RED) {
         };
             
         
-            // Commands recived for Whatsapp Admin.
-            this.on('input', async function(msg, send){
-                if (msg.payload === "destroy") {
-                    if(node.client.clientType === "waWebClient"){
-                        node.clinet.WAClose();
-                        SetStatus("Disconnected","red");
-                    }
-                } 
-                else if (msg.payload==="logout") {
-                    if(node.client.clientType === "waWebClient"){
-                        node.client.logout();
-                        SetStatus("Logged Out","red");
-                    }
+        // Commands recived for Whatsapp Admin.
+        this.on('input', async function(msg, send){
+            if (msg.payload === "destroy") {
+                if(node.client.clientType === "waWebClient"){
+                    node.clinet.WAClose();
+                    SetStatus("Disconnected","red");
+                } else {
+                    var client = await node.client;
+                    client.end();
+                    SetStatus("Disconnected","red");
                 }
-                else if (msg.payload === "test"){
-                    if(node.client.clientType === "waWebClient"){
-                        msg.payload = await node.client.getState();
-                        node.send(msg);
-                    }
-                }           
-                else if (msg.payload === "restart"){
-                    if(node.client.clientType === "waWebClient"){
-                        node.client.WARestart();
-                        SetStatus("Connecting...", "yellow");
-                    }
-                };        
-            });
+            } 
+            else if (msg.payload==="logout") {
+                if(node.client.clientType === "waWebClient"){
+                    node.client.logout();
+                    SetStatus("Logged Out","red");
+                } else{
+                    var client = await node.client;
+                    client.logout();
+                    SetStatus("Disconnected","red");
+                }
+            }
+            else if (msg.payload === "test"){
+                if(node.client.clientType === "waWebClient"){
+                    msg.payload = await node.client.getState();
+                    node.send(msg);
+                } else {
+                    var client = await node.client;
+                    await client.sendPresenceUpdate('available')
+                    SetStatus("Presence Avilable","green");
+                }
+            }           
+            else if (msg.payload === "restart"){
+                if(node.client.clientType === "waWebClient"){
+                    node.client.WARestart();
+                    SetStatus("Connecting...", "yellow");
+                } else {
+                    var client = await node.client;
+                        client.end();
+                        SetStatus("Restarting...", "yellow");
+                        setTimeout(() => {
+                            SetStatus("Please Deploy all nodes to subscribe for messgaes", "yellow");
+                            node.client.clientStartFunction();
+                        }, 3000)
+                }
+            };        
+        });
 
 
         if(node.client.clientType === "waWebClient"){
@@ -110,6 +130,29 @@ module.exports = function(RED) {
             async function clientFromWhatsappLite(){
                 client = await node.client;
                 client.ev.on('connection.update', (updates)=>{
+
+                    if(updates.qr){
+                        QRCode.toDataURL(updates.qr, function(err, url){
+                            var qrImageWithID = {};
+                            qrImageWithID.id = node.id;
+                            qrImageWithID.image = url;
+                            RED.comms.publish("whatsappLinkQrCode", qrImageWithID);
+                        });
+    
+                        QRCode.toString(updates.qr, {type : 'terminal', small:true }, function(err, QRTerminal){
+                            node.log(`To Connect, Scan the QR Code through your Whatsapp Mobile App.`)
+                            console.log("");
+                            console.log(QRTerminal);
+                        });
+                    }
+                    if (connection === 'open') {
+                        var qrImageWithID = {};
+                        qrImageWithID.id = node.id;
+                        qrImageWithID.image = null;
+                        RED.comms.publish("whatsappLinkQrCode", qrImageWithID);
+                    }
+
+                    //console.log(updates);
                     var {connection} = updates
                     //Setting conncetion status indication
                     if(connection === 'open'){
@@ -124,7 +167,7 @@ module.exports = function(RED) {
                     else if(connection === 'connecting'){
                         SetStatus("Connecting...", "yellow");
                     }
-                    else if(updates.is){
+                    else if(updates.qr){
                         SetStatus("Scan QR Code to Connect.", "yellow");
                     }
                 })
