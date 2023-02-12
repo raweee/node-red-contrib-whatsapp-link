@@ -4,21 +4,33 @@ module.exports = function(RED) {
         var node = this;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
-        
+        var whatsappLiteEvents = config.whatsappLiteevent;
+        var whatsappWebEvents = config.whatsappWebevent;
+         
         function SetStatus(WAStatus, color){
             node.status({fill:color,shape:"dot",text:WAStatus});   
         };
 
-        if(node.waClient.clientType === "waWebClient"){             
-            node.waClient.on('message', async message => {
-                let msg = {};
-                msg.payload = message.body;
-                msg.from = message.author || message.from ;
-                msg.chatID = message.from.replace(/\D/g, '');
-                msg.from = msg.from.replace(/\D/g, '');
-                msg.message = message ;
-                node.send(msg);
-            });
+        if(node.waClient.clientType === "waWebClient"){
+            whatsappWebEvents = whatsappWebEvents?.split(",") || whatsappWebEvents ;
+            whatsappWebEvents?.forEach((waEvent)=>{
+                if (waEvent ==='message'){
+                    node.waClient.on(waEvent, async message => {
+                        let msg = {};
+                        msg.payload = message.body|| null;
+                        msg.from = message.author || message.from ;
+                        msg.chatID = message.from.replace(/\D/g, '');
+                        msg.from = msg.from.replace(/\D/g, '');
+                        msg.message = message ;
+                        node.send(msg);
+                    });
+                } else {
+                    node.waClient.on(waEvent, async message => {
+                        node.send(message);
+                    });
+                };
+            })
+            
 
             //whatsapp Status Parameters----
             node.waClient.on('qr', (qr) => {
@@ -46,18 +58,28 @@ module.exports = function(RED) {
             var client = null
             async function clientFromWhatsappLite(){
                 client = await node.waClient;
-                
-                client.ev.on('messages.upsert', msgs =>{
-                    msgs.messages.forEach(async msg =>{
-                        msg.payload = msg.message?.conversation;
-                        msg.from = msg.key.participant || msg.key.remoteJid;
-                        msg.from = msg.from.replace(/\D/g, '') || msg.from;
-                        msg.chatID = msg.key.remoteJid.replace(/\D/g, '') || msg.key.remoteJid ;
-                        node.send(msg)
-                    })
-                });
-             
-                
+                whatsappLiteEvents = whatsappLiteEvents?.split(",") || whatsappLiteEvents;
+                whatsappLiteEvents?.forEach((waEvent)=>{
+                    if (waEvent ==='messages.upsert'){
+                        client.ev.on('messages.upsert', msgs =>{
+                            msgs.messages.forEach(async msg =>{
+                            msg.payload = msg.message?.conversation;
+                            msg.from = msg.key.participant || msg.key.remoteJid;
+                            msg.from = msg.from.replace(/\D/g, '') || msg.from;
+                            msg.chatID = msg.key.remoteJid.replace(/\D/g, '') || msg.key.remoteJid ;
+                            node.send(msg)
+                            })
+                        });
+                    } 
+                    else {
+                        client.ev.on(waEvent, msgs =>{
+                            node.send(msgs)
+                        });
+ 
+                    };
+                })
+
+
                 //Setting conncetion status indication
                 client.ev.on('connection.update', (updates)=>{
                     var {connection} = updates
@@ -80,14 +102,7 @@ module.exports = function(RED) {
             
             }
             clientFromWhatsappLite();
-
-
-
-
-
-
-        }
-
+        };
     }
     RED.nodes.registerType("chats-in", WhatsappIn);
 }

@@ -6,7 +6,6 @@ module.exports = function(RED) {
         var node = this;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.client = whatsappLinkNode.client;
-        // RED.comms.publish("whatsappLinkNodeID", node.id)
             
         function SetStatus(WAStatus, color){
             node.status({fill:color,shape:"dot",text:WAStatus});

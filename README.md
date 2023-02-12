@@ -61,6 +61,54 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
     | `msg.chatID` | Chat ID of Group chat / Personal chat |
     | `msg.message` | Complete message object. <br />*Some extra details for advance users* |
 
+    Other Events options -- 
+
+    | waWebClient | Description |
+    |-------------|-------------|
+    | `message`
+    | `message_create`
+    | `auth_failure`
+    | `authenticated`
+    | `change_battery`
+    | `change_state`
+    | `disconnected`
+    | `group_join`
+    | `group_leave`
+    | `group_update`
+    | `incoming_call`
+    | `media_uploaded`
+    | `message_ack`
+    | `message_reaction`
+    | `message_revoke_everyone`
+    | `message_revoke_me`
+    | `qr`
+    | `ready`
+
+    | waSocketClient | Description |
+    |-------------|----------------|
+    | `messages.upsert`                                
+    | `connection.update`                                   
+    | `creds.update`                             
+    | `messaging-history.set`                                   
+    | `chats.upsert`                         
+    | `chats.update`                                  
+    | `chats.delete`                                  
+    | `presence.update`                                   
+    | `contacts.upsert`                                  
+    | `contacts.update`                                  
+    | `messages.delete`                                  
+    | `messages.update`                                  
+    | `messages.media-update`                                   
+    | `messages.reaction`
+    | `message-receipt.update`                                   
+    | `groups.upsert`                         
+    | `groups.update`                                  
+    | `group-participants.update`                                   
+    | `blocklist.set`                                   
+    | `blocklist.update`                                   
+    | `call`
+        
+
 
 3. **Chats Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
@@ -138,7 +186,7 @@ msg.payload = {
 
 ```
 Yes its lot require for buttons, A node will come soon to minimize these effors. 
-You may direct import these test button with bellow code. 
+You may direct import these test button with bellow code.
 
 ```json
 [
@@ -263,6 +311,9 @@ You may direct import these test button with bellow code.
     }
 ]
 ```
+### Screen Shots of Buttons and Image Messages.
+
+![](.github/messageScreenShot.jpeg)
 
 
 5. **Reply Node** : In Beta mode.
@@ -280,6 +331,7 @@ Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-co
 * `Ver-0.1.30` : Message can be send to an  Array of contacts provided at `msg.toNumber`.
 * `Ver-0.1.32` : Socket based `Whatsapp Lite` config node added in beta mode. Image message sending support added in chats-out node. 
 * `Ver-0.1.33` : Button and list support added, Minnor bugs fixed. 
+* `Ver-0.1.34` : Multiple Events reading options are added in Chats-In Node. 
 
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -

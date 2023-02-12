@@ -1,17 +1,89 @@
 <script type="text/javascript">
-    RED.nodes.registerType('chats-in',{
-        category: 'whatsapp',
-        color: '#25D366',
-        defaults: {
-            name: {value:"Chats In"},
-            whatsappLink: {value:"whatsapp-web", type:'whatsappLink'}        
-        },
-        outputs:1,
-        icon: 'whatsappLink.svg',
-        label: function() {
-            return this.name||"Chats In";
+    (function () {
+        let socketEventOptions = [
+            { value : 'messages.upsert', lable : 'messages.upsert'},                                   
+            { value : 'connection.update', lable : 'connection.update'},                                   
+            { value : 'creds.update', lable : 'creds.update'},                                   
+            { value : 'messaging-history.set', lable : 'messaging-history.set'},                                   
+            { value : 'chats.upsert', lable : 'chats.upsert'},                                   
+            { value : 'chats.update', lable : 'chats.update'},                                   
+            { value : 'chats.delete', lable : 'chats.delete'},                                   
+            { value : 'presence.update', lable : 'presence.update'},                                   
+            { value : 'contacts.upsert', lable : 'contacts.upsert'},                                   
+            { value : 'contacts.update', lable : 'contacts.update'},                                   
+            { value : 'messages.delete', lable : 'messages.delete'},                                   
+            { value : 'messages.update', lable : 'messages.update'},                                   
+            { value : 'messages.media-update', lable : 'messages.media-update'},                                   
+            { value : 'messages.reaction', lable : 'messages.reaction'},
+            { value : 'message-receipt.update', lable : 'message-receipt.update',},                                   
+            { value : 'groups.upsert', lable : 'groups.upsert'},                                   
+            { value : 'groups.update', lable : 'groups.update'},                                   
+            { value : 'group-participants.update', lable : 'group-participants.update'},                                   
+            { value : 'blocklist.set', lable : 'blocklist.set'},                                   
+            { value : 'blocklist.update', lable : 'blocklist.update'},                                   
+            { value : 'call', lable : 'call'}                                 
+        ];
+        let webEventOpstions = [
+            { value : 'message', label : 'message'},
+            { value : 'message_create', label : 'message_create'},
+            { value : 'auth_failure', label : 'auth_failure'},
+            { value : 'authenticated', label : 'authenticated'},
+            { value : 'change_battery', label : 'change_battery'},
+            { value : 'change_state', label : 'change_state'},
+            { value : 'disconnected', label : 'disconnected'},
+            { value : 'group_join', label : 'group_join'},
+            { value : 'group_leave', label : 'group_leave'},
+            { value : 'group_update', label : 'group_update'},
+            { value : 'incoming_call', label : 'incoming_call'},
+            { value : 'media_uploaded', label : 'media_uploaded'},
+            { value : 'message_ack', label : 'message_ack'},
+            { value : 'message_reaction', label : 'message_reaction'},
+            { value : 'message_revoke_everyone', label : 'message_revoke_everyone'},
+            { value : 'message_revoke_me', label : 'message_revoke_me'},
+            { value : 'qr', label : 'qr'},
+            { value : 'ready', label : 'ready'}
+        ];
+            
+        function setMyInputLable(myLable) {
+            return { "value": myLable, "label": myLable }
         }
-    });
+
+        RED.nodes.registerType('chats-in',{
+            category: 'whatsapp',
+            color: '#25D366',
+            defaults: {
+                name: {value:"Chats In"},
+                whatsappLink: {value:"whatsapp-web", type:'whatsappLink'},
+                whatsappLiteevent : {},
+                whatsappWebevent : {}
+            },
+            outputs:1,
+            icon: 'whatsappLink.svg',
+            label: function() {
+                return this.name||"Chats In";
+            },
+            oneditprepare: function(){
+                $("#node-input-whatsappWebevent").typedInput({
+                    types: [
+                        {
+                            value: "Select Client Type",
+                            multiple: "true",
+                            options: webEventOpstions
+                        }
+                    ]
+                });
+                $("#node-input-whatsappLiteevent").typedInput({
+                    types: [
+                        {
+                            value: "Select Client Type",
+                            multiple: "true",
+                            options: socketEventOptions
+                        }
+                    ]
+                })
+            }
+        });
+    })();
 </script>
 
 <script type="text/html" data-template-name="chats-in">
@@ -23,8 +95,21 @@
         <label for="node-input-whatsappLink"><i class="fa fa-gear"></i> Client</label>
         <input type="text" id="node-input-whatsappLink" placeholder="Name">
     </div>
+    <hr>
+    <div>
+        <label for="node-input-whatsappLiteevent" ><i class="fa fa-envelope"></i>  Socket Event : <input type="text" id="node-input-whatsappLiteevent"></label>
+    </div>
     <div class="form-tips">
-        <p>Node will recive all whatsapp (personal and group) messages.</p>
+        <p>waSocketClient only. Select <b>message.upsert</b> to recive all chats messages.
+            Multiple options are also avilable</p>
+    </div>
+    <hr>
+    <div>
+        <label for="node-input-whatsappWebevent" ><i class="fa fa-envelope"></i>  Web Event : <input type="text" id="node-input-whatsappWebevent"></label>
+    </div>
+    <div class="form-tips">
+        <p>waWebClient only. Select <b>message</b> to recive all chats messages.
+            Multiple options are also avilable</p>
     </div>
 </script>
   
@@ -40,5 +125,52 @@ Node to recive all messages send to connected number.
     | `msg.from`   | Sender Number |
     | `msg.chatID` | Chat ID of Group chat / Personal chat |
     | `msg.message` | Complete message object. <br />*Some extra details for advance users* |
+
+    Other Events options -- 
+
+    | waWebClient | Description |
+    |-------------|-------------|
+    | `message`
+    | `message_create`
+    | `auth_failure`
+    | `authenticated`
+    | `change_battery`
+    | `change_state`
+    | `disconnected`
+    | `group_join`
+    | `group_leave`
+    | `group_update`
+    | `incoming_call`
+    | `media_uploaded`
+    | `message_ack`
+    | `message_reaction`
+    | `message_revoke_everyone`
+    | `message_revoke_me`
+    | `qr`
+    | `ready`
+
+    | waSocketClient | Description |
+    |-------------|----------------|
+    | `messages.upsert`                                
+    | `connection.update`                                   
+    | `creds.update`                             
+    | `messaging-history.set`                                   
+    | `chats.upsert`                         
+    | `chats.update`                                  
+    | `chats.delete`                                  
+    | `presence.update`                                   
+    | `contacts.upsert`                                  
+    | `contacts.update`                                  
+    | `messages.delete`                                  
+    | `messages.update`                                  
+    | `messages.media-update`                                   
+    | `messages.reaction`
+    | `message-receipt.update`                                   
+    | `groups.upsert`                         
+    | `groups.update`                                  
+    | `group-participants.update`                                   
+    | `blocklist.set`                                   
+    | `blocklist.update`                                   
+    | `call`
 
 </script>
