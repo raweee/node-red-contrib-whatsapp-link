@@ -102,7 +102,7 @@ module.exports = function(RED) {
                 }
 
             } else if (message.toNumber){
-                var numbers = typeof message.toNumber === 'number' ? Array.of(message.toNumber) : message.toNumber;
+                var numbers = message.toNumber instanceof Array ? message.toNumber : Array.of(message.toNumber);
                 for (number of numbers) {
                     if(message.image){
                         whatsappMultiMediaMessage(number, message.image, message.payload)

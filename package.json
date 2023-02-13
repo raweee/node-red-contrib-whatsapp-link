@@ -32,7 +32,8 @@
   "dependencies": {
     "@adiwajshing/baileys": "latest",
     "whatsapp-web.js": "latest",
-    "qrcode": "^1.5.1"
+    "qrcode": "^1.5.1",
+    "pino": "latest"
   },
   "engines": {
     "node": ">=8.0.0"

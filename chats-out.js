@@ -29,11 +29,8 @@ module.exports = function(RED) {
                 try {
                     numb = webNubmerSeteing(numb);
                     if(typeof inputMessage === "object"){
-                        // inputMessage = new Buttons(inputMessage.text, inputMessage.buttons, "text" ,inputMessage.footer)   
-                        let myBtn = new Buttons('Button body',[{body:'bt1'},{body:'bt2'},{body:'bt3'}],'title','footer');
-                        console.log(myBtn)
+                        inputMessage = new Buttons(inputMessage.text, inputMessage.buttons, "text" ,inputMessage.footer);
                         node.waClient.sendMessage(numb, inputMessage);
-                        inputMessage = myBtn
                     }
                     node.waClient.sendMessage(numb, inputMessage);
                 }
@@ -51,7 +48,7 @@ module.exports = function(RED) {
                     const msgStatus = await client.sendMessage(numb, inputMessage);
                 }
                 catch(e) {
-                    node.error(`Error Sending Msg: ${e}`);
+                    node.error(`Error Sending Msg:: ${e}`);
                 }
             } 
             else { 
@@ -101,7 +98,7 @@ module.exports = function(RED) {
                 }
 
             } else if (message.toNumber){
-                var numbers = typeof message.toNumber === 'number' ? Array.of(message.toNumber) : message.toNumber;
+                var numbers = message.toNumber instanceof Array ? message.toNumber : Array.of(message.toNumber);
                 for (number of numbers) {
                     if(message.image){
                         whatsappMultiMediaMessage(number, message.image, message.payload)

@@ -175,10 +175,10 @@ Participants : ${chat.groupMetadata.size}`
                                 lastDisconnect.error.output &&
                                 lastDisconnect.error.output.statusCode === 401
                             ) {
-                                connectSocketClient()
                                 FS.rmSync(whatsappLinkDirSocket, {recursive : true, force: true})
+                                connectSocketClient()
                             } else {
-                                WAnode.log('Node Refressed')
+                                WAnode.error(lastDisconnect?.error)
                             }
                         }
                     }
