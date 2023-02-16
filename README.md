@@ -64,7 +64,7 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
     Their are many other events options avilable along with `message` event in Chats-In Node. For details refer documentation for Chats-In Node. 
 
 
-3. **Chats Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
+3. **Chats / Group Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
 
     MultiMedia Message: Requirments-
     | Input | Description |

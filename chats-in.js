@@ -17,6 +17,7 @@ module.exports = function(RED) {
                 if (waEvent ==='message'){
                     node.waClient.on(waEvent, async message => {
                         let msg = {};
+                        msg.event = waEvent;
                         msg.payload = message.body|| null;
                         msg.from = message.author || message.from ;
                         msg.chatID = message.from.replace(/\D/g, '');
@@ -26,7 +27,10 @@ module.exports = function(RED) {
                     });
                 } else {
                     node.waClient.on(waEvent, async message => {
-                        node.send(message);
+                        msg = {};
+                        msg.event = waEvent;
+                        msg.message = message
+                        node.send(msg);
                     });
                 };
             })
@@ -63,19 +67,20 @@ module.exports = function(RED) {
                     if (waEvent ==='messages.upsert'){
                         client.ev.on('messages.upsert', msgs =>{
                             msgs.messages.forEach(async msg =>{
-                            msg.payload = msg.message?.conversation;
-                            msg.from = msg.key.participant || msg.key.remoteJid;
-                            msg.from = msg.from.replace(/\D/g, '') || msg.from;
-                            msg.chatID = msg.key.remoteJid.replace(/\D/g, '') || msg.key.remoteJid ;
-                            node.send(msg)
+                                msg.event = waEvent;
+                                msg.payload = msg.message?.conversation;
+                                msg.from = msg.key.participant || msg.key.remoteJid;
+                                msg.from = msg.from.replace(/\D/g, '') || msg.from;
+                                msg.chatID = msg.key.remoteJid.replace(/\D/g, '') || msg.key.remoteJid ;
+                                node.send(msg)
                             })
                         });
                     } 
                     else {
                         client.ev.on(waEvent, msgs =>{
+                            msgs.event = waEvent;
                             node.send(msgs)
                         });
- 
                     };
                 })
 

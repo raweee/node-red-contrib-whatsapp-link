@@ -127,7 +127,7 @@ Participants : ${chat.groupMetadata.size}`
                 // const loggerFile = pino.destination(whatsappLinkDirSocketLogs);
                 const socketClient = makeWASocket.default({
                     printQRInTerminal: false,
-                    logger:pino({level: "fatal"}),
+                    logger:pino({level: "silent"}),
                     auth : state,
                     browser: ["Node-RED", "Chrome", "4.0.0"],
                     markOnlineOnConnect: true,
@@ -152,8 +152,10 @@ Participants : ${chat.groupMetadata.size}`
                         },
                 })
 
-                socketClient.ev.on('creds.update', saveCreds)
-        
+                socketClient.ev.on('creds.update', saveCreds);
+                console.log(socketClient)
+                // socketClient.setMaxListeners(0);
+            
                 socketClient.ev.on('connection.update', (update) => {
                     const { connection, lastDisconnect } = update
                     if (connection === 'close') {
@@ -198,7 +200,8 @@ Participants : ${chat.groupMetadata.size}`
                     clearInterval(WAnode.connectionSetupID);
                     WAnode.client.WAClose();
                 } else {
-                    WAnode.client.end()
+                    // WAnode.client.removeAllListeners();
+                    WAnode.client.end();
                 }
 
             }
