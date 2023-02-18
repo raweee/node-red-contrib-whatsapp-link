@@ -72,6 +72,9 @@ module.exports = function(RED) {
                                 msg.from = msg.key.participant || msg.key.remoteJid;
                                 msg.from = msg.from.replace(/\D/g, '') || msg.from;
                                 msg.chatID = msg.key.remoteJid.replace(/\D/g, '') || msg.key.remoteJid ;
+                                if(msg.message.extendedTextMessage){
+                                    return null
+                                }
                                 node.send(msg)
                             })
                         });

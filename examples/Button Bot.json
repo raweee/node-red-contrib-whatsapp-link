@@ -1,0 +1,248 @@
+[
+    {
+        "id": "595bb93a55a7385e",
+        "type": "tab",
+        "label": "Whatsapp-Button-Bot",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d078d4c37dcddbfd",
+        "type": "chats-in",
+        "z": "595bb93a55a7385e",
+        "name": "Chats In",
+        "whatsappLink": "45549bbfeb38499a",
+        "whatsappLiteevent": "messages.upsert",
+        "whatsappWebevent": "",
+        "x": 80,
+        "y": 180,
+        "wires": [
+            [
+                "b6b28a9e9b416545",
+                "456aeee272c23848"
+            ]
+        ]
+    },
+    {
+        "id": "b6b28a9e9b416545",
+        "type": "switch",
+        "z": "595bb93a55a7385e",
+        "name": "Get #hi",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "#hi",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "#Hi",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 280,
+        "y": 120,
+        "wires": [
+            [
+                "8eb6e842afc48bf9"
+            ],
+            [
+                "8eb6e842afc48bf9"
+            ]
+        ]
+    },
+    {
+        "id": "8eb6e842afc48bf9",
+        "type": "function",
+        "z": "595bb93a55a7385e",
+        "name": "To get the #hi",
+        "func": "msg.payload = {\n    text: \"Hi, This a test message for buttons, try selecting any option below.\", //String\n    footer: `I'm just a footer.`,   //String\n    headerType: 1,                  //keep it \"1\" only.\n    buttons: [                      // Array of buttons.\n        {buttonId: 'id1-string', buttonText: {displayText: 'Simple Reply'}, type: 1},\n        {buttonId: 'id2-tempMessage', buttonText: {displayText: 'Temp. Button'}, type: 1},\n        {buttonId: 'listMessage-id3', buttonText: {displayText: 'List Message'}, type: 1}\n    ]\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 120,
+        "wires": [
+            [
+                "b6f984dbcae75a69",
+                "32b120bcdc2446d0"
+            ]
+        ]
+    },
+    {
+        "id": "b6f984dbcae75a69",
+        "type": "chats-out",
+        "z": "595bb93a55a7385e",
+        "name": "Chats Out",
+        "whatsappLink": "45549bbfeb38499a",
+        "number": "",
+        "x": 700,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "456aeee272c23848",
+        "type": "switch",
+        "z": "595bb93a55a7385e",
+        "name": "Get Button Response",
+        "property": "message.buttonsResponseMessage.selectedButtonId",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "id1-string",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "id2-tempMessage",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "listMessage-id3",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 260,
+        "y": 320,
+        "wires": [
+            [
+                "351cb37bbcb7d1dc"
+            ],
+            [
+                "c8565e37aefa1654"
+            ],
+            [
+                "2d81ceeaf0b1f07a"
+            ]
+        ]
+    },
+    {
+        "id": "32b120bcdc2446d0",
+        "type": "debug",
+        "z": "595bb93a55a7385e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "351cb37bbcb7d1dc",
+        "type": "function",
+        "z": "595bb93a55a7385e",
+        "name": "Mention Reply",
+        "func": "\nmsg.payload = {\n    text: `Hi @${msg.from}, hello from Tomato Bot.`, \n    mentions: [`${msg.key.remoteJid}`]\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 280,
+        "wires": [
+            [
+                "b6f984dbcae75a69",
+                "32b120bcdc2446d0"
+            ]
+        ]
+    },
+    {
+        "id": "c8565e37aefa1654",
+        "type": "function",
+        "z": "595bb93a55a7385e",
+        "name": "Temp. Button",
+        "func": "msg.payload = {\n    text: \"Hi it's a template message 👍 to Test\",\n    footer: 'Hello I am footer of message.',\n    templateButtons: [\n        {index: 1, urlButton: {displayText: '⭐ Vist Node-RED', url: 'https://nodered.org/'}},\n        {index: 2, callButton: {displayText: 'Call me!', phoneNumber: '+1 (234) 5678-901'}},\n        {index: 3, quickReplyButton: {displayText: 'Click me I am Button', id: 'I-am-button-id-without-space'}},\n        {index: 4, quickReplyButton: {displayText: '🖱️ Sample Button 2', id: 'button-2-was-clicked'}}\n    ]\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 320,
+        "wires": [
+            [
+                "b6f984dbcae75a69",
+                "32b120bcdc2446d0"
+            ]
+        ]
+    },
+    {
+        "id": "2d81ceeaf0b1f07a",
+        "type": "function",
+        "z": "595bb93a55a7385e",
+        "name": "List Button",
+        "func": "msg.payload = {\n  text: \"This is a list\",\n  footer: \"nice footer, link: https://google.com\",\n  title: \"Amazing boldfaced list title\",\n  buttonText: \"Required, Tap to see List\",\n  sections : [{\n    title: \"Section 1\",\n    rows: [\n        {title: \"Option 1\", rowId: \"option1\"},\n        {title: \"Option 2\", rowId: \"option2\", description: \"This is a description\"}\n    ]},\n   {\n    title: \"Section 2\",\n    rows: [\n        {title: \"Option 3\", rowId: \"option3\"},\n        {title: \"Option 4\", rowId: \"option4\", description: \"This is a description V2\"}\n    ]\n    }]\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 360,
+        "wires": [
+            [
+                "b6f984dbcae75a69",
+                "32b120bcdc2446d0"
+            ]
+        ]
+    },
+    {
+        "id": "03ed98e4d8a123e1",
+        "type": "comment",
+        "z": "595bb93a55a7385e",
+        "name": "Socket Client Only",
+        "info": "Connect with whatsapp Lite (socket client) only",
+        "x": 110,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "ef67038c9dbff9d1",
+        "type": "comment",
+        "z": "595bb93a55a7385e",
+        "name": "To get #hi from user and reply a button",
+        "info": "Connect with whatsapp Lite (socket client) only",
+        "x": 390,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "08eb70757179304d",
+        "type": "comment",
+        "z": "595bb93a55a7385e",
+        "name": "Reply as per button response",
+        "info": "Connect with whatsapp Lite (socket client) only",
+        "x": 400,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "45549bbfeb38499a",
+        "type": "whatsappLink",
+        "cName": "whatsapp-web",
+        "name": "Web",
+        "clientType": "waSocketClient",
+        "onlineStatus": false,
+        "loopTime": "5"
+    }
+]

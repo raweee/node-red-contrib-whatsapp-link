@@ -4,7 +4,9 @@
         defaults: {
             cName : {value:"whatsapp-web",required:true},
             name : {value : "Web"},
-            clientType: {}
+            clientType: {},
+            onlineStatus : {value : true},
+            loopTime : {value : 5, validate:RED.validators.number()}
         },
         label: function() {
             return this.clientType;
@@ -15,23 +17,35 @@
                     {
                         value: "Select Client Type",
                         options: [
-                            { value: "waWebClient", label: "Whatsapp Web"},
                             { value: "waSocketClient", label: "Whatsapp Lite"},
+                            { value: "waWebClient", label: "Whatsapp Web"},
                         ]
                     }
                 ]
-            })
+            });
         }
     });
 </script>
 
 <script type="text/html" data-template-name="whatsappLink">
     <div>
-        <label for="node-config-input-client" ><i class="fa fa-cog"></i> Select type of Whatsapp Client : </label>
-        <input type="text" id="node-config-input-clientType">
+        <label ><i class="fa fa-cog"></i> Whatsapp Client : 
+            <input type="text" id="node-config-input-clientType" style="width:40%;">  
+            <input type="checkbox" id="node-config-input-onlineStatus">
+        </label>
     </div>
+    
     <br>
     <div class="form-tips">
-       <p> All done here just <b>Select the type of Whatsapp Client</b> and proceed.</p>
+        <p> All done here just Select the type of Whatsapp Client and proceed.</p>
+        <p> <b>Checkbox On </b> : Shows Online.</p>
+        <p> <b>Checkbox Off </b> : Shows last seen (As per main device).</p>
+        <p> To recive push notification on main device, Turn Checkbox Off.</p>
+    </div>
+    <br>
+    <div>
+        <label ><i class="fa fa-cog"></i> Ping Whatsapp to avoid sleep every : 
+            <input type="text" placeholder="05" id="node-config-input-loopTime" style="width: 15%;"> hr.
+        </label>
     </div>
 </script>

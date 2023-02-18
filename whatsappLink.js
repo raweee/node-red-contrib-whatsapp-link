@@ -12,6 +12,10 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,n);
         var WAnode = this;
         var clientType = n.clientType;
+        var loopTime = n.loopTime;
+        loopTime = loopTime + Math.random();
+        loopTime = loopTime * 60 * 60 * 1000;
+        var onlineStatus = n.onlineStatus;
         var whatsappConnectionStatus;
         var client
 
@@ -40,7 +44,20 @@ module.exports = function(RED) {
             };
             client = WAConnect();
             WAnode.connectionSetupID = setInterval(connectionSetup, 10000); 
-
+            
+            async function pressenceUpdate(OLS){
+                try {
+                    if (!OLS){
+                        await client.sendPresenceUnavailable();
+                        WAnode.log(`Whatsapp marked as Offline`)
+                    } else {
+                        await client.sendPresenceAvailable();
+                    }
+                } catch (e){
+                    WAnode.error("Error at pressence : " + e)
+                }
+            }
+            
             function WAClose(){
                 try { 
                     client.destroy();
@@ -49,12 +66,12 @@ module.exports = function(RED) {
                     WAnode.err(`Error : Too many instructions! Try again.`)
                 }
             };
-                
+            
             var WARestart = function(){
                 WAClose();
                 WAConnect();
             }
-
+            
             async function connectionSetup(){
                 try {
                     whatsappConnectionStatus = await client.getState();
@@ -69,7 +86,7 @@ module.exports = function(RED) {
                     WAnode.log(`Error : Waiting for Initializion...`);
                 }
             };
-
+            
             //QR-Code on Terminal and Ready Status. 
             client.on("qr", (qr)=>{
                 clearInterval(WAnode.connectionSetupID);
@@ -81,6 +98,7 @@ module.exports = function(RED) {
             });
             client.on("ready", ()=>{
                 WAnode.log(`Status : Whatsapp Connected`);
+                pressenceUpdate(onlineStatus);
             });
 
             //Whatsapp-Link Test Features (For Status and Testing Only.)
@@ -130,7 +148,7 @@ Participants : ${chat.groupMetadata.size}`
                     logger:pino({level: "silent"}),
                     auth : state,
                     browser: ["Node-RED", "Chrome", "4.0.0"],
-                    markOnlineOnConnect: true,
+                    markOnlineOnConnect: onlineStatus,
                     patchMessageBeforeSending: (message) => {
                         const requiresPatch = !!(
                             message.buttonsMessage || message.templateMessage || message.listMessage
@@ -153,8 +171,6 @@ Participants : ${chat.groupMetadata.size}`
                 })
 
                 socketClient.ev.on('creds.update', saveCreds);
-                console.log(socketClient)
-                // socketClient.setMaxListeners(0);
             
                 socketClient.ev.on('connection.update', (update) => {
                     const { connection, lastDisconnect } = update
@@ -180,21 +196,51 @@ Participants : ${chat.groupMetadata.size}`
                                 FS.rmSync(whatsappLinkDirSocket, {recursive : true, force: true})
                                 connectSocketClient()
                             } else {
-                                WAnode.error(lastDisconnect?.error)
+                                WAnode.log("Error : " + lastDisconnect?.error)
                             }
                         }
                     }
-                })
+                })              
                 return socketClient
             };
             client = connectSocketClient();
+            client.onlineStatus = onlineStatus;
             client.clientType = clientType;
             client.clientStartFunction = connectSocketClient;
             WAnode.client = client
         };
-
-
+        
+        async function loopStatusUpdate(){
+          try {
+            if (clientType === "waSocketClient"){
+                let myClient = await WAnode.client;
+                let id = myClient.user.id;
+                await myClient.sendPresenceUpdate("available", id)
+                if (!onlineStatus) {
+                    setTimeout(()=> {
+                        myClient.sendPresenceUpdate("unavailable", id)
+                    },17000)
+                };
+            } 
+            else {
+                await WAnode.client.sendPresenceAvailable();
+                if (!onlineStatus) {
+                    setTimeout(()=> {
+                        WAnode.client.sendPresenceUnavailable();
+                    },17000)
+                };
+            }}
+            catch(e){
+                WAnode.error("Error in whatsapp Ping.")
+            }
+        }
+  
+        var loopStatusUpdateID = setInterval(()=> {
+            loopStatusUpdate();
+        }, loopTime)
+        
         this.on('close', (removed, done)=>{
+            clearInterval(loopStatusUpdateID);
             if(removed){
                 if(clientType === "waWebClient"){
                     clearInterval(WAnode.connectionSetupID);

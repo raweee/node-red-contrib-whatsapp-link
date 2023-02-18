@@ -1,0 +1,93 @@
+[
+    {
+        "id": "595bb93a55a7385e",
+        "type": "tab",
+        "label": "Reply to All",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b6f984dbcae75a69",
+        "type": "chats-out",
+        "z": "595bb93a55a7385e",
+        "name": "Chats Out",
+        "whatsappLink": "45549bbfeb38499a",
+        "number": "",
+        "x": 500,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "2ea4a9bd3d83e9e4",
+        "type": "template",
+        "z": "595bb93a55a7385e",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Hi, this is Node-Red reply for your message ( {{payload}} ) !",
+        "output": "str",
+        "x": 320,
+        "y": 180,
+        "wires": [
+            [
+                "b6f984dbcae75a69",
+                "befa79a6ea6ed85a"
+            ]
+        ]
+    },
+    {
+        "id": "6eeee838055ff52c",
+        "type": "chats-in",
+        "z": "595bb93a55a7385e",
+        "name": "Chats In",
+        "whatsappLink": "45549bbfeb38499a",
+        "whatsappLiteevent": "messages.upsert",
+        "whatsappWebevent": "",
+        "x": 120,
+        "y": 180,
+        "wires": [
+            [
+                "2ea4a9bd3d83e9e4"
+            ]
+        ]
+    },
+    {
+        "id": "befa79a6ea6ed85a",
+        "type": "debug",
+        "z": "595bb93a55a7385e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 490,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "75123143fa9f3494",
+        "type": "comment",
+        "z": "595bb93a55a7385e",
+        "name": "Simple Ping Pong (Reply to all)",
+        "info": "",
+        "x": 350,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "45549bbfeb38499a",
+        "type": "whatsappLink",
+        "cName": "whatsapp-web",
+        "name": "Web",
+        "clientType": "waSocketClient",
+        "onlineStatus": false,
+        "loopTime": "5"
+    }
+]
