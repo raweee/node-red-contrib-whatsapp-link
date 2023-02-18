@@ -14,7 +14,7 @@ module.exports = function(RED) {
         var clientType = n.clientType;
         var loopTime = n.loopTime;
         loopTime = loopTime + Math.random();
-        loopTime = loopTime * 60 * 60 * 1000;
+        loopTime = loopTime * 60 * 60 * 1000 || 3600000;
         var onlineStatus = n.onlineStatus;
         var whatsappConnectionStatus;
         var client

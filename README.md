@@ -65,7 +65,7 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
 
 
 3. **Chats / Group Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
-A reply to All example is avilable in examples to import.
+`A-reply-to-All.json` example is avilable in examples to import.
 
     MultiMedia Message: Requirments-
     | Input | Description |
