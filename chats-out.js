@@ -77,7 +77,7 @@ module.exports = function(RED) {
             var whatsappImageBase64 = whatsappImage.split(',')[1] || whatsappImage;
             try {
                 if (node.waClient.clientType === "waWebClient"){
-                    numb = await webNubmerSeteing(node.number)
+                    numb = await webNubmerSeteing(numb)
                     var myMessage = new MessageMedia('image/png', whatsappImageBase64, null, null);
                     node.waClient.sendMessage(numb, myMessage, {caption : whatsappCaption || "Image from Node-Red"});
                 } 
