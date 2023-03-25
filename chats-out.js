@@ -31,7 +31,6 @@ module.exports = function(RED) {
             numb = typeof numb ==='number' ? numb : numb.replace(/\D/g, '');
             const [result] = await (await node.waClient).onWhatsApp(numb)
             if (result?.exists){
-                console.log(result.exists)
                 return result.jid
             }
             return numb = `${numb}@g.us`;
@@ -74,15 +73,16 @@ module.exports = function(RED) {
         };
 
         async function whatsappMultiMediaMessage(numb, whatsappImage, whatsappCaption){
+            whatsappCaption =  whatsappCaption || "Image from Node-Red";
             var whatsappImageBase64 = whatsappImage.split(',')[1] || whatsappImage;
             try {
                 if (node.waClient.clientType === "waWebClient"){
                     numb = await webNubmerSeteing(numb)
                     var myMessage = new MessageMedia('image/png', whatsappImageBase64, null, null);
-                    node.waClient.sendMessage(numb, myMessage, {caption : whatsappCaption || "Image from Node-Red"});
+                    node.waClient.sendMessage(numb, myMessage, {caption : whatsappCaption });
                 } 
                 else {
-                    numb = await socNubmerSeteing(node.number)
+                    numb = await socNubmerSeteing(numb)
                     const imageMessage = {
                         text: whatsappCaption,
                         footer: null,
@@ -111,7 +111,8 @@ module.exports = function(RED) {
                 }
 
             } else if (message.toNumber){
-                var numbers = message.toNumber instanceof Array ? message.toNumber : Array.of(message.toNumber);
+                let isArr = Object.prototype.toString.call(message.toNumber) == '[object Array]';
+                var numbers = isArr ? message.toNumber : Array.of(message.toNumber);
                 for (number of numbers) {
                     if(message.image){
                         whatsappMultiMediaMessage(number, message.image, message.payload)

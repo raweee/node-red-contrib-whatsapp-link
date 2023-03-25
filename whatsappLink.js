@@ -29,7 +29,7 @@ module.exports = function(RED) {
                     }),
                     puppeteer : {
                         headless : true,
-                        args : ['--no-sandbox', '--disable-setuid-sandbox', '--user-data-dir=' + node.id]
+                        args : ['--no-sandbox', '--disable-setuid-sandbox', '--user-data-dir=' + WAnode.id]
                     }
                 });
 
@@ -99,33 +99,6 @@ module.exports = function(RED) {
             client.on("ready", ()=>{
                 WAnode.log(`Status : Whatsapp Connected`);
                 pressenceUpdate(onlineStatus);
-            });
-
-            //Whatsapp-Link Test Features (For Status and Testing Only.)
-            client.on('message_create', async (msg)=> {
-                msg.body = `${msg.body}`;
-                if (msg.body.startsWith('!nodered')){
-                    let chat = await msg.getChat();
-                    let contact = await msg.getContact();
-                    if (chat.isGroup){
-                        let msgReply = 
-`Hi From Node-Red.
-------------------
-Group Name   : ${chat.name},
-Group Id     : ${chat.id.user},
-Group Admin  : ${chat.groupMetadata.owner.user},
-Participants : ${chat.groupMetadata.size}`
-                        msg.reply(msgReply);
-                    }
-                    else {
-                        let msgReply = `Hi @${contact.number} From Node-Red.`
-                        chat.sendMessage(msgReply, {
-                            mentions : [contact]
-                        });  
-                    }
-                    
-                }
-
             });
 
             client.WAConnect = WAConnect;
