@@ -15,7 +15,7 @@ Currently in developing mode, Continous updated may encounter. :sweat_smile:
 5. Send "`!nodered`" to get a reply from Node-Red  in Chats/Groups. 
 
 ### if Whatsapp Web not working ?
-Their is lite version also avilable in it. Totally different from Whatapp-Web,
+Their is lite version also avilable in it. Totally different from Whatsapp-Web,
 Whatsapp-Lite (Beta Mode) works on Web-Sockets only, It might work for you also.
 
 Simply chosse `Whatsapp Lite` in Whatsapp-Link configration node. 
