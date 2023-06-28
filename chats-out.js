@@ -9,6 +9,8 @@ module.exports = function(RED) {
 
         let SetStatus = function(WAStatus, color){
             node.status({fill:color,shape:"dot",text:WAStatus});
+            msg = {payload : WAStatus};
+            node.send(msg);
         };
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
