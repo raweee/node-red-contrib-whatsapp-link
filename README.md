@@ -71,7 +71,10 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
     | Input | Description |
     |--------|-------------|
     | `msg.image` | Base64 (encoded image) |
-    | `msg.payload`   | Image Caption |
+    | `msg.file` | Base64 (encoded file) |
+    | `msg.fileType` | MIME type of file (default:'text/plain') |
+    | `msg.fileName` | Name of the file |
+    | `msg.payload`   | Image/File Caption |
     | `msg.toNumber` | Reciver number (if number not provided in node) |
 
     Don't forget to mention international dialing code befor your number.
