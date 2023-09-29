@@ -30,7 +30,7 @@
     }
   },
   "dependencies": {
-    "@adiwajshing/baileys": "latest",
+    "@whiskeysockets/baileys": "latest",
     "whatsapp-web.js": "latest",
     "qrcode": "^1.5.1",
     "pino": "latest"
