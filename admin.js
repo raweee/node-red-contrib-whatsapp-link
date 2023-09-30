@@ -72,7 +72,7 @@ module.exports = function(RED) {
                 msg.type = notification.type;
                 msg.notification = notification;
                 node.send(msg);
-                notification.reply('!Node-Red joined');
+                // notification.reply('!Node-Red joined');
             });
 
             node.client.on('group_leave', async (notification)=>{

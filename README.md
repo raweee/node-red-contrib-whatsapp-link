@@ -1,6 +1,7 @@
 # Whatsapp Link :iphone:
 
 Simple node for connecting Node-Red to Whatsapp :iphone:
+Send and Receive Whatsapp Image/Text.
 
 Currently in developing mode, Continous updated may encounter. :sweat_smile: 
 
@@ -65,12 +66,12 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
 
 
 3. **Chats / Group Out** : As simple as mention on name, node will send `msg.payload` recived at input to the number mentioned in node.
-`A-reply-to-All.json` example is avilable in examples to import.
+`ImageMessage.json` example is avilable in examples to import.
 
     MultiMedia Message: Requirments-
     | Input | Description |
     |--------|-------------|
-    | `msg.image` | Base64 (encoded image) |
+    | `msg.image` | Base64 (encoded image), [`image-tool`](https://flows.nodered.org/node/node-red-contrib-image-tools) node work fine|
     | `msg.payload`   | Image Caption |
     | `msg.toNumber` | Reciver number (if number not provided in node) |
 
@@ -144,6 +145,7 @@ msg.payload = {
 Yes its lot require for buttons, A node will come soon to minimize these effors. 
 You may direct import these test buttons from the Node Examples.
 
+`A-reply-to-All.json` example is avilable in examples to import.
 
 5. **Reply Node** : In Beta mode. (Chats-out Node can be used instead of reply node)
 
@@ -163,7 +165,7 @@ Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-co
 * `Ver-0.1.34` : Multiple Events reading options are added in Chats-In Node. 
 * `Ver-0.1.36` : Check box added to show status as `Online/Offline` in Whatsapp-Link Node, to get push notifications. Ping-Interval added to keep whatsapp alive for long time. Multiple examples added.
 * `Ver-0.1.37` : Changes for correction of send message with images and use Chromium profiles in Puppeteer.
-* `Ver-0.1.39A` : Broken "Whatsapp-Web & Lite" fixed. Able to recive and send text. working on easy to use nodes. 
+* `Ver-0.1.39B` : Broken "Whatsapp-Web & Lite" fixed. Able to `Send/Receive` whatsapp `Image/Text` in both Whatsapp-Lite & Web. working on easy to use nodes. 
 
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -

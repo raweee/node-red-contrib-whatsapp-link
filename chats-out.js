@@ -5,7 +5,8 @@ module.exports = function(RED) {
         node.number = config.number;
         var whatsappLinkNode = RED.nodes.getNode(config.whatsappLink);
         node.waClient = whatsappLinkNode.client;
-        const { MessageMedia, Buttons } = require('whatsapp-web.js')
+        const { MessageMedia, Buttons } = require('whatsapp-web.js');
+        const {Mimetype} = require(`@whiskeysockets/baileys`);
 
         let SetStatus = function(WAStatus, color){
             node.status({fill:color,shape:"dot",text:WAStatus});
@@ -75,6 +76,7 @@ module.exports = function(RED) {
         async function whatsappMultiMediaMessage(numb, whatsappImage, whatsappCaption){
             whatsappCaption =  whatsappCaption || "Image from Node-Red";
             var whatsappImageBase64 = whatsappImage.split(',')[1] || whatsappImage;
+            console.log(whatsappImageBase64)
             try {
                 if (node.waClient.clientType === "waWebClient"){
                     numb = await webNubmerSeteing(numb)
@@ -83,12 +85,14 @@ module.exports = function(RED) {
                 } 
                 else {
                     numb = await socNubmerSeteing(numb)
-                    const imageMessage = {
-                        text: whatsappCaption,
-                        footer: null,
-                        templateButtons: null,
-                        image: {url : whatsappImage }
-                    };
+
+                    let imageToSend = Buffer.from(whatsappImageBase64, "base64");
+                    const imageMessage = { 
+                        // image: {url : whatsappImage}, 
+                        image: imageToSend, 
+                        caption: whatsappCaption
+                    }
+
                     let client = await node.waClient;
                     const msgStatus = await client.sendMessage(numb, imageMessage);
                 }              

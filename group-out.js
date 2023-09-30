@@ -76,21 +76,23 @@ module.exports = function(RED) {
         };
 
         async function whatsappMultiMediaMessage(numb, whatsappImage, whatsappCaption){
-            var whatsappImageBase64 = whatsappImage.split(',')[1] || whatsappImage;
             try {
                 if (node.waClient.clientType === "waWebClient"){
                     numb = await webNubmerSeteing(node.number)
+                    var whatsappImageBase64 = whatsappImage.split(',')[1] || whatsappImage;
                     var myMessage = new MessageMedia('image/png', whatsappImageBase64, null, null);
                     node.waClient.sendMessage(numb, myMessage, {caption : whatsappCaption || "Image from Node-Red"});
                 } 
                 else {
-                    numb = await socNubmerSeteing(node.number)
-                    const imageMessage = {
-                        text: whatsappCaption,
-                        footer: null,
-                        templateButtons: null,
-                        image: {url : whatsappImage }
-                    };
+                    numb = await socNubmerSeteing(node.number);
+                    
+                    let imageToSend = Buffer.from(whatsappImageBase64, "base64");
+                    const imageMessage = { 
+                        // image: {url : whatsappImage}, 
+                        image: imageToSend, 
+                        caption: whatsappCaption
+                    }
+
                     let client = await node.waClient;
                     const msgStatus = await client.sendMessage(numb, imageMessage);
                 }              
