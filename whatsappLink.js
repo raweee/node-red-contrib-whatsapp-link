@@ -109,7 +109,7 @@ module.exports = function(RED) {
         };
 
         if (clientType === "waSocketClient"){
-            const makeWASocket = require('@adiwajshing/baileys');
+            const makeWASocket = require('@whiskeysockets/baileys');
             const { useMultiFileAuthState } = makeWASocket;
             const pino = require('pino');
             
