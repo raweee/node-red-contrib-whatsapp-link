@@ -163,7 +163,7 @@ Issues and Suggestions are welcome [here.](https://github.com/raweee/node-red-co
 * `Ver-0.1.34` : Multiple Events reading options are added in Chats-In Node. 
 * `Ver-0.1.36` : Check box added to show status as `Online/Offline` in Whatsapp-Link Node, to get push notifications. Ping-Interval added to keep whatsapp alive for long time. Multiple examples added.
 * `Ver-0.1.37` : Changes for correction of send message with images and use Chromium profiles in Puppeteer.
-* `Ver-0.1.39` : "Broken Whatsapp-Lite" fixed. working on easy to use nodes. 
+* `Ver-0.1.39A` : Broken "Whatsapp-Web & Lite" fixed. Able to recive and send text. working on easy to use nodes. 
 
 ## Future Nodes
 Currently working on more Whatsapp Node and will be avilable soon -

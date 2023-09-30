@@ -101,7 +101,6 @@ module.exports = function(RED) {
             });
 
             client.on(`ready`, ()=>{
-                console.log("connected")
                 WAnode.log(`Status : Whatsapp Connected`);
                 pressenceUpdate(onlineStatus);
             });
