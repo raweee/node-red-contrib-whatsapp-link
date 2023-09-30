@@ -72,14 +72,20 @@ module.exports = function(RED) {
             }, 2000)
         };
 
-        async function whatsappMultiMediaMessage(numb, whatsappImage, whatsappCaption){
-            whatsappCaption =  whatsappCaption || "Image from Node-Red";
+        async function whatsappMultiMediaMessage(numb, whatsappImage, whatsappCaption,mimeType,fileName){
+            whatsappCaption =  whatsappCaption || "";
+            mimeType = mimeType || "text/plain";
+            fileName = fileName || "file"
             var whatsappImageBase64 = whatsappImage.split(',')[1] || whatsappImage;
             try {
                 if (node.waClient.clientType === "waWebClient"){
                     numb = await webNubmerSeteing(numb)
-                    var myMessage = new MessageMedia('image/png', whatsappImageBase64, null, null);
-                    node.waClient.sendMessage(numb, myMessage, {caption : whatsappCaption });
+                    var myMessage = new MessageMedia(mimeType, whatsappImageBase64, fileName, null);
+                    if(whatsappCaption===""){
+                        node.waClient.sendMessage(numb, myMessage,{caption : " " });
+                    }else{
+                        node.waClient.sendMessage(numb, myMessage, {caption : whatsappCaption });
+                    }
                 } 
                 else {
                     numb = await socNubmerSeteing(numb)
@@ -102,10 +108,14 @@ module.exports = function(RED) {
         };
 
         node.on('input', (message)=> {
+            message.payload = message.payload?.toString();
             if (node.number){
                 if (message.image){
-                    whatsappMultiMediaMessage(node.number, message.image, message.payload);       
+                    whatsappMultiMediaMessage(node.number, message.image, message.payload,'image/png',null);       
                 }  
+                else if(message.file){
+                    whatsappMultiMediaMessage(node.number, message.file, message.payload,message.fileType, message.fileName);       
+                }
                 else {
                     whatsappMessage(node.number, message.payload);
                 }
@@ -115,10 +125,15 @@ module.exports = function(RED) {
                 var numbers = isArr ? message.toNumber : Array.of(message.toNumber);
                 for (number of numbers) {
                     if(message.image){
-                        whatsappMultiMediaMessage(number, message.image, message.payload)
+                        whatsappMultiMediaMessage(number, message.image, message.payload,'image/png',null)
                         delay(2000);
 
-                    } else {
+                    }
+                    else if(message.file){
+                        whatsappMultiMediaMessage(node.number, message.file, message.payload,message.fileType, message.fileName);   
+                        delay(2000)    
+                    }
+                    else {
                         whatsappMessage(number, message.payload)
                         delay(2000)
                     }
