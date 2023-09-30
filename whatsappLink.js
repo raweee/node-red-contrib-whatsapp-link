@@ -29,7 +29,10 @@ module.exports = function(RED) {
                     }),
                     puppeteer : {
                         headless : true,
-                        args : ['--no-sandbox', '--disable-setuid-sandbox', '--user-data-dir=' + WAnode.id]
+                        args : ['--no-sandbox', 
+                            '--disable-setuid-sandbox',
+                            '--user-data-dir=' + WAnode.id
+                        ]
                     }
                 });
 
@@ -43,8 +46,7 @@ module.exports = function(RED) {
                 return webClient ;
             };
             client = WAConnect();
-            WAnode.connectionSetupID = setInterval(connectionSetup, 10000); 
-            
+
             async function pressenceUpdate(OLS){
                 try {
                     if (!OLS){
@@ -86,20 +88,26 @@ module.exports = function(RED) {
                     WAnode.log(`Error : Waiting for Initializion...`);
                 }
             };
-            
+            WAnode.connectionSetupID = setInterval(connectionSetup, 10000); 
+
             //QR-Code on Terminal and Ready Status. 
-            client.on("qr", (qr)=>{
-                clearInterval(WAnode.connectionSetupID);
+            client.on(`qr`, (qr)=>{
+                // clearInterval(WAnode.connectionSetupID);
                 QRCode.toString(qr, {type : 'terminal', small:true }, function(err, QRTerminal){
                     WAnode.log(`To Connect, Scan the QR Code through your Whatsapp Mobile App.`)
                     console.log("");
                     console.log(QRTerminal);
                 });
             });
-            client.on("ready", ()=>{
+
+            client.on(`ready`, ()=>{
+                console.log("connected")
                 WAnode.log(`Status : Whatsapp Connected`);
                 pressenceUpdate(onlineStatus);
             });
+
+
+
 
             client.WAConnect = WAConnect;
             client.WARestart = WARestart;

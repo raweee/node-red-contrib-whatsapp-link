@@ -31,9 +31,9 @@
   },
   "dependencies": {
     "@whiskeysockets/baileys": "latest",
-    "whatsapp-web.js": "latest",
+    "pino": "latest",
     "qrcode": "^1.5.1",
-    "pino": "latest"
+    "whatsapp-web.js": "^1.16.4-alpha.0"
   },
   "engines": {
     "node": ">=8.0.0"
