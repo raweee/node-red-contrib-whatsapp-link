@@ -126,16 +126,21 @@ module.exports = function(RED) {
 
         if(node.client.clientType === "waSocketClient"){
             var client = null
+
+            
             async function clientFromWhatsappLite(){
                 client = await node.client;
                 client.ev.on('connection.update', (updates)=>{
-
+                    function printQrCode(urlQr) {
+                        var qrImageWithID = {};
+                        qrImageWithID.id = node.id;
+                        qrImageWithID.image = urlQr;
+                        RED.comms.publish("whatsappLinkQrCode", qrImageWithID);
+                    } 
+                    
                     if(updates.qr){
                         QRCode.toDataURL(updates.qr, function(err, url){
-                            var qrImageWithID = {};
-                            qrImageWithID.id = node.id;
-                            qrImageWithID.image = url;
-                            RED.comms.publish("whatsappLinkQrCode", qrImageWithID);
+                            printQrCode(url);
                         });
     
                         QRCode.toString(updates.qr, {type : 'terminal', small:true }, function(err, QRTerminal){
@@ -144,20 +149,16 @@ module.exports = function(RED) {
                             console.log(QRTerminal);
                         });
                     }
-                    if (connection === 'open') {
-                        var qrImageWithID = {};
-                        qrImageWithID.id = node.id;
-                        qrImageWithID.image = null;
-                        RED.comms.publish("whatsappLinkQrCode", qrImageWithID);
-                    }
 
-                    //console.log(updates);
-                    var {connection} = updates
+                    
                     //Setting conncetion status indication
+                    var {connection} = updates
                     if(connection === 'open'){
+                        printQrCode(null);
                         SetStatus("Connected", "green");
                     }
                     else if(updates.isOnline){
+                        printQrCode(null);
                         SetStatus("Connected", "green");
                     }
                     else if(connection === 'close'){

@@ -76,7 +76,6 @@ module.exports = function(RED) {
         async function whatsappMultiMediaMessage(numb, whatsappImage, whatsappCaption){
             whatsappCaption =  whatsappCaption || "Image from Node-Red";
             var whatsappImageBase64 = whatsappImage.split(',')[1] || whatsappImage;
-            console.log(whatsappImageBase64)
             try {
                 if (node.waClient.clientType === "waWebClient"){
                     numb = await webNubmerSeteing(numb)

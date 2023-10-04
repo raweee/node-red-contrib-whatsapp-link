@@ -71,7 +71,7 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
     MultiMedia Message: Requirments-
     | Input | Description |
     |--------|-------------|
-    | `msg.image` | Base64 (encoded image), [`image-tool`](https://flows.nodered.org/node/node-red-contrib-image-tools) node work fine|
+    | `msg.image` | Base64 (encoded image), [`image-tool`](https://flows.nodered.org/node/node-red-contrib-image-tools) node work fine for incoding base64|
     | `msg.payload`   | Image Caption |
     | `msg.toNumber` | Reciver number (if number not provided in node) |
 
@@ -85,65 +85,6 @@ Admin Node generate QR Code just below the node for easy connection with whatsap
 4. **Group Message** : Whatsapp Group Node to send message in a Group.
 
     The node will send recived `msg.payload` to a group chat.
-
-## Button, List and TemplateButton
-Supported in Whatsapp-Lite only, `TODO for Whatsapp-Web`. 
-A Complete Button-Bot example is avilable in Node examples.
-
-* <b>Simple Button </b>For simple 3 Bottons your `msg.paylod` should be... 
-
-```js
-msg.payload = {
-    text: "Hi it's button message", //String
-    footer: 'Hello World',          //String
-    headerType: 1,                  //keep it "1" only.
-    buttons: [                      // Array of buttons.
-        {buttonId: 'id1', buttonText: {displayText: 'Button 1'}, type: 1},
-        {buttonId: 'id2', buttonText: {displayText: 'Button 2'}, type: 1},
-        {buttonId: 'id3', buttonText: {displayText: 'Button 3'}, type: 1}
-    ]
-}
-```
-* <b>TemplateButton</b> combination of <b>link button</b>, <b>Call button</b> and Normal buttons. Your `msg.paylod` should look similar to--
-
-```js
-msg.payload = {
-    text: "Hi it's a template message by Node-RED 👍 to Test",
-    footer: 'Hello I am footer of message.',
-    templateButtons: [
-        {index: 1, urlButton: {displayText: '⭐ Vist Node-RED', url: 'https://nodered.org/'}},
-        {index: 2, callButton: {displayText: 'Call me!', phoneNumber: '+1 (234) 5678-901'}},
-        {index: 3, quickReplyButton: {displayText: 'Click me I am Button', id: 'I-am-button-id-without-space'}},
-        {index: 4, quickReplyButton: {displayText: '🖱️ Sample Button 2', id: 'button-2-was-clicked'}}
-    ]
-}
-```
-* <b>List Message</b> combination of <b>link button</b>, <b>List button</b> and Selectors. Your `msg.paylod` should look similar to--
-
-```js
-msg.payload = {
-  text: "This is a list",
-  footer: "nice footer, link: https://google.com",
-  title: "Amazing boldfaced list title",
-  buttonText: "Required, Tap to see List",
-  sections : [{
-	title: "Section 1",
-	rows: [
-	    {title: "Option 1", rowId: "option1"},
-	    {title: "Option 2", rowId: "option2", description: "This is a description"}
-	]},
-   {
-	title: "Section 2",
-	rows: [
-	    {title: "Option 3", rowId: "option3"},
-	    {title: "Option 4", rowId: "option4", description: "This is a description V2"}
-	]
-    }]
-}
-
-```
-Yes its lot require for buttons, A node will come soon to minimize these effors. 
-You may direct import these test buttons from the Node Examples.
 
 `A-reply-to-All.json` example is avilable in examples to import.
 

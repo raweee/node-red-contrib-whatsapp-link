@@ -105,9 +105,6 @@ module.exports = function(RED) {
                 pressenceUpdate(onlineStatus);
             });
 
-
-
-
             client.WAConnect = WAConnect;
             client.WARestart = WARestart;
             client.WAClose = WAClose;
@@ -156,7 +153,14 @@ module.exports = function(RED) {
                     const { connection, lastDisconnect } = update
                     if (connection === 'close') {
                         // reconnect if not logged out
-        
+
+                        // console.log(lastDisconnect, lastDisconnect?.error?.data?.content)
+                        // if (lastDisconnect.error.output.statusCode === 401 ||
+                        //     lastDisconnect.error.output.statusCode === 440){
+                        //         console.log(`logged Out by User. StatusCode : ${lastDisconnect?.error?.output.statusCode}`)
+                        //         FS.rmSync(whatsappLinkDirSocket, {recursive : true, force: true})
+                        // }
+                        // connectSocketClient();
                         if (
                             lastDisconnect &&
                             lastDisconnect.error &&
@@ -171,12 +175,13 @@ module.exports = function(RED) {
                                 lastDisconnect &&
                                 lastDisconnect.error &&
                                 lastDisconnect.error.output &&
-                                lastDisconnect.error.output.statusCode === 401
+                                lastDisconnect.error.output.statusCode === 401 &&
+                                lastDisconnect.error.output.statusCode === 440
                             ) {
                                 FS.rmSync(whatsappLinkDirSocket, {recursive : true, force: true})
                                 connectSocketClient()
                             } else {
-                                WAnode.log("Error : " + lastDisconnect?.error)
+                                WAnode.log(`ErrorCode: ${lastDisconnect?.error?.output.statusCode} | ${lastDisconnect?.error}`)
                             }
                         }
                     }
